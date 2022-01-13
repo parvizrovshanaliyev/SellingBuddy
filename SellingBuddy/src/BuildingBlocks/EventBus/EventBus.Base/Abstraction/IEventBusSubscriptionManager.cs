@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EventBus.Base.Events;
 
 namespace EventBus.Base.Abstraction
 {
-    public interface IEventBusManager
+    public interface IEventBusSubscriptionManager
     {
         bool IsEmpty { get; }
         event EventHandler<string> OnEventRemoved;
