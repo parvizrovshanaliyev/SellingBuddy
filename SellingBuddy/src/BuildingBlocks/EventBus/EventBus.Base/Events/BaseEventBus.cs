@@ -10,35 +10,35 @@ using Newtonsoft.Json;
 
 namespace EventBus.Base.Events
 {
-    public abstract class BaseEventBus: IEventBus
+    public abstract class BaseEventBus : IEventBus
     {
         #region fields
 
         protected readonly IServiceProvider ServiceProvider;
         protected readonly IEventBusSubscriptionManager SubsManager;
-        private EventBusConfig _eventBusConfig;
+        public EventBusConfig EventBusConfig { get; set; }
         #endregion
 
         #region ctor
 
-        protected BaseEventBus(IServiceProvider serviceProvider,EventBusConfig eventBusConfig)
+        protected BaseEventBus(IServiceProvider serviceProvider, EventBusConfig eventBusConfig)
         {
             ServiceProvider = serviceProvider;
             SubsManager = new InMemoryEventBusSubscriptionManager(ProcessEventName);
-            _eventBusConfig = eventBusConfig;
+            EventBusConfig = eventBusConfig;
         }
         #endregion
 
         public virtual string ProcessEventName(string eventName)
         {
-            if (_eventBusConfig.DeleteEventPrefix)
+            if (EventBusConfig.DeleteEventPrefix)
             {
-                eventName = eventName.TrimStart(_eventBusConfig.EventNamePrefix.ToArray());
+                eventName = eventName.TrimStart(EventBusConfig.EventNamePrefix.ToArray());
             }
 
-            if (_eventBusConfig.DeleteEventSuffix)
+            if (EventBusConfig.DeleteEventSuffix)
             {
-                eventName = eventName.TrimStart(_eventBusConfig.EventNameSuffix.ToArray());
+                eventName = eventName.TrimStart(EventBusConfig.EventNameSuffix.ToArray());
             }
 
             return eventName;
@@ -46,13 +46,10 @@ namespace EventBus.Base.Events
 
         public virtual string GetSubName(string eventName)
         {
-            return $"{_eventBusConfig.SubscriptionClientAppName}.{ProcessEventName(eventName)}";
+            return $"{EventBusConfig.SubscriptionClientAppName}.{ProcessEventName(eventName)}";
         }
 
-        public virtual void Dispose()
-        {
-            _eventBusConfig = null;
-        }
+        public virtual void Dispose() => EventBusConfig = null;
 
         public async Task<bool> ProcessEvent(string eventName, string message)
         {
@@ -61,15 +58,15 @@ namespace EventBus.Base.Events
             if (SubsManager.HasSubscriptionForEvent(eventName))
             {
                 var subscriptions = SubsManager.GetHandlersForEvent(eventName);
-                using (var scope= ServiceProvider.CreateScope())
+                using (var scope = ServiceProvider.CreateScope())
                 {
                     foreach (var subscription in subscriptions)
                     {
                         var handler = ServiceProvider.GetService(subscription.HandlerType);
-                        if(handler==null) continue;
+                        if (handler == null) continue;
 
                         var eventType = SubsManager.GetEventTypeByName(
-                            $"{_eventBusConfig.EventNamePrefix}{eventName}{_eventBusConfig.EventNameSuffix}");
+                            $"{EventBusConfig.EventNamePrefix}{eventName}{EventBusConfig.EventNameSuffix}");
 
                         var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
 
