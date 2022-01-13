@@ -18,6 +18,7 @@ namespace EventBus.Base.Events
         protected readonly IEventBusSubscriptionManager SubsManager;
         private EventBusConfig _eventBusConfig;
         #endregion
+
         #region ctor
 
         protected BaseEventBus(IServiceProvider serviceProvider,EventBusConfig eventBusConfig)
