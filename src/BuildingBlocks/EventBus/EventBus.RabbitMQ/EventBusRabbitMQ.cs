@@ -46,6 +46,7 @@ namespace EventBus.RabbitMQ
             else
             {
                 _connectionFactory = new ConnectionFactory();
+                _connectionFactory.Uri = new Uri(config.EventBusConnectionString);
             }
 
             _persistentConnection = new RabbitMQPersistentConnection(

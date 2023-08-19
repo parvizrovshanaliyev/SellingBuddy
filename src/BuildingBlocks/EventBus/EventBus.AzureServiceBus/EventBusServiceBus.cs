@@ -183,7 +183,7 @@ namespace EventBus.AzureServiceBus
             bool ruleExits;
             try
             {
-                var rule = _managementClient.GetRuleAsync(EventBusConfig.DefaultTopicName, eventName, eventName)
+                var rule = _managementClient.GetRuleAsync(EventBusConfig.DefaultTopicName, GetSubName(eventName), eventName)
                     .GetAwaiter().GetResult();
                 ruleExits = rule != null;
             }

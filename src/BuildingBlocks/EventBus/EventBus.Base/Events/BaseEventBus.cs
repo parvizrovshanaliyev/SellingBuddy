@@ -38,7 +38,7 @@ namespace EventBus.Base.Events
 
             if (EventBusConfig.DeleteEventSuffix)
             {
-                eventName = eventName.TrimStart(EventBusConfig.EventNameSuffix.ToArray());
+                eventName = eventName.TrimEnd(EventBusConfig.EventNameSuffix.ToArray());
             }
 
             return eventName;
@@ -46,7 +46,7 @@ namespace EventBus.Base.Events
 
         public virtual string GetSubName(string eventName)
         {
-            return $"{EventBusConfig.SubscriptionClientAppName}.{ProcessEventName(eventName)}";
+            return $"{EventBusConfig.SubscriberClientAppName}.{ProcessEventName(eventName)}";
         }
 
         public virtual void Dispose()
