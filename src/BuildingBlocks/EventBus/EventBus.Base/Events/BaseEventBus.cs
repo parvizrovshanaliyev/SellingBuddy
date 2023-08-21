@@ -17,6 +17,7 @@ namespace EventBus.Base.Events
         protected readonly IServiceProvider ServiceProvider;
         protected readonly IEventBusSubscriptionManager SubsManager;
         public EventBusConfig EventBusConfig { get; set; }
+
         #endregion
 
         #region ctor
@@ -27,6 +28,7 @@ namespace EventBus.Base.Events
             SubsManager = new InMemoryEventBusSubscriptionManager(ProcessEventName);
             EventBusConfig = eventBusConfig;
         }
+
         #endregion
 
         public virtual string ProcessEventName(string eventName)
@@ -53,43 +55,58 @@ namespace EventBus.Base.Events
         {
             EventBusConfig = null;
             SubsManager.Clear();
-        } 
+        }
 
-        public async Task<bool> ProcessEvent(string eventName, string message)
+        protected async Task<bool> ProcessEvent(string eventName, string message)
         {
+            // Preprocess the event name
             eventName = ProcessEventName(eventName);
-            var processed = false;
-            if (SubsManager.HasSubscriptionForEvent(eventName))
+
+            // Check if there are any subscriptions for the event
+            if (!SubsManager.HasSubscriptionForEvent(eventName))
             {
-                var subscriptions = SubsManager.GetHandlersForEvent(eventName);
-                using (var scope = ServiceProvider.CreateScope())
-                {
-                    foreach (var subscription in subscriptions)
-                    {
-                        var handler = ServiceProvider.GetService(subscription.HandlerType);
-                        if (handler == null) continue;
-
-                        var eventType = SubsManager.GetEventTypeByName(
-                            $"{EventBusConfig.EventNamePrefix}{eventName}{EventBusConfig.EventNameSuffix}");
-
-                        var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-
-                        //if (integrationEvent is IntegrationEvent)
-                        //{
-                        //    _eventBusConfig.CorrelationIdSetter?.Invoke((integrationEvent as IntegrationEvent)
-                        //        .CorrelationId);
-                        //}
-
-                        var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-                        await (Task)concreteType.GetMethod("Handle").Invoke(handler, new object[] { integrationEvent });
-                    }
-                }
-
-                processed = true;
+                // No subscriptions found, no need to process further
+                return false;
             }
 
-            return processed;
+            // Retrieve the list of subscriptions for the event
+            var subscriptions = SubsManager.GetHandlersForEvent(eventName);
+
+            using (var scope = ServiceProvider.CreateScope())
+            {
+                foreach (var subscription in subscriptions)
+                {
+                    // Get the handler for the subscription
+                    var handler = ServiceProvider.GetService(subscription.HandlerType);
+
+                    // If handler is not available, skip to the next subscription
+                    if (handler == null)
+                    {
+                        continue;
+                    }
+
+                    // Get the event type based on the processed event name
+                    var eventType = SubsManager.GetEventTypeByName(
+                        $"{EventBusConfig.EventNamePrefix}{eventName}{EventBusConfig.EventNameSuffix}");
+
+                    // Deserialize the message to the corresponding event type
+                    var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
+
+                    // Create the concrete handler type using the event type
+                    var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+
+                    // Get the Handle method of the handler
+                    var handleMethod = concreteType.GetMethod("Handle");
+
+                    // Invoke the Handle method asynchronously with the integration event
+                    await (Task)handleMethod.Invoke(handler, new object[] { integrationEvent });
+                }
+            }
+
+            // All subscriptions have been processed
+            return true;
         }
+
 
         public abstract void Publish(IntegrationEvent @event);
 

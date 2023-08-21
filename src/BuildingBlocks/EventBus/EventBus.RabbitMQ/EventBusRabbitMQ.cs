@@ -83,6 +83,11 @@ namespace EventBus.RabbitMQ
 
             _consumerChannel.ExchangeDeclare(exchange: EventBusConfig.DefaultTopicName,
                 type: "direct"); // Ensure exchange exists while publishing
+            
+            // TODO: Burada olmali deyil
+            // _consumerChannel.QueueBind(queue: GetSubName(eventName),
+            //     exchange: EventBusConfig.DefaultTopicName,
+            //     routingKey: eventName);
 
             var message = JsonConvert.SerializeObject(@event);
             var body = Encoding.UTF8.GetBytes(message);

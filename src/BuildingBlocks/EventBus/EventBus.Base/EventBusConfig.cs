@@ -19,6 +19,26 @@ namespace EventBus.Base
 
         public bool DeleteEventPrefix => !String.IsNullOrEmpty(EventNamePrefix);
         public bool DeleteEventSuffix => !String.IsNullOrEmpty(EventNameSuffix);
+        
+        public static EventBusConfig GetRabbitMQConfig(string subscriberClientAppName)
+        {
+            return new EventBusConfig()
+            {
+                ConnectionRetryCount = 5,
+                SubscriberClientAppName = subscriberClientAppName,
+                DefaultTopicName = "SellingBuddyTopicName",
+                EventBusType = EventBusType.RabbitMQ,
+                EventNameSuffix = "IntegrationEvent",
+                EventBusConnectionString = "amqps://wtjzmmla:1GNs9JSK1kfinUeiyyahyyay3URIUxaS@toad.rmq.cloudamqp.com/wtjzmmla"
+                //Connection = new ConnectionFactory ()
+                //{
+                // HostName = "localhost",
+                // Port = 15672,
+                // //11 UserName = "guest",
+                // Password = "guest"
+                //}
+            };
+        }
 
     }
 

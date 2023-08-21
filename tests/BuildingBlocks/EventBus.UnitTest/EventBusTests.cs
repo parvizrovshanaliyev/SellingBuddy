@@ -26,6 +26,8 @@ namespace EventBus.UnitTest
         public void subscribe_event_on_rabbitmq_test()
         {
             _services.AddSingleton<IEventBus>(sp => EventBusFactory.Create(GetRabbitMQConfig(),sp));
+            
+            _services.AddTransient<OrderCreatedIntegrationEventHandlers>();
 
             var sp = _services.BuildServiceProvider();
 
@@ -33,7 +35,7 @@ namespace EventBus.UnitTest
             
             
             eventBus.Subscribe<OrderCreatedIntegrationEvent,OrderCreatedIntegrationEventHandlers>();
-            eventBus.UnSubscribe<OrderCreatedIntegrationEvent,OrderCreatedIntegrationEventHandlers>();
+            //eventBus.UnSubscribe<OrderCreatedIntegrationEvent,OrderCreatedIntegrationEventHandlers>();
         }
 
         [TestMethod]
@@ -50,7 +52,7 @@ namespace EventBus.UnitTest
         [TestMethod]
         public void consume_order_created_from_rabbitmq_test()
         {
-            _services.AddSingleton<IEventBus>(sp => EventBusFactory. Create(GetRabbitMQConfig(), sp));
+            _services.AddSingleton<IEventBus>(sp => EventBusFactory.Create(GetRabbitMQConfig(), sp));
             
             var sp = _services.BuildServiceProvider();
             var eventBus = sp.GetRequiredService<IEventBus>();
