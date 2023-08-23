@@ -1,4 +1,5 @@
-﻿using EventBus.Base;
+﻿using System.Threading.Tasks;
+using EventBus.Base;
 using EventBus.Base.Abstraction;
 using EventBus.Factory;
 using EventBus.UnitTest.Events.Order;
@@ -12,7 +13,7 @@ namespace EventBus.UnitTest
     [TestClass]
     public class EventBusTests
     {
-        private ServiceCollection _services;
+        private readonly ServiceCollection _services;
 
         public EventBusTests()
         {
@@ -35,7 +36,9 @@ namespace EventBus.UnitTest
             
             
             eventBus.Subscribe<OrderCreatedIntegrationEvent,OrderCreatedIntegrationEventHandlers>();
-            //eventBus.UnSubscribe<OrderCreatedIntegrationEvent,OrderCreatedIntegrationEventHandlers>();
+            eventBus.UnSubscribe<OrderCreatedIntegrationEvent,OrderCreatedIntegrationEventHandlers>();
+
+            Task.Delay(2000).Wait();
         }
 
         [TestMethod]
