@@ -7,6 +7,7 @@ using EventBus.UnitTest.Events.Order;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PaymentService.Api.IntegrationEvents.Order;
 
 namespace EventBus.UnitTest;
 
@@ -49,6 +50,20 @@ public class EventBusTests
         var eventBus = sp.GetRequiredService<IEventBus>();
 
         eventBus.Publish(new OrderCreatedIntegrationEvent());
+    }
+    /// <summary>
+    /// PaymentApi.Service
+    /// </summary>
+    [TestMethod]
+    public void send_order_started_message_to_rabbitmq_test()
+    {
+        _services.AddSingleton(sp => EventBusFactory.Create(EventBusConfig.GetRabbitMQConfig("PaymentService.Api"), sp));
+
+        var sp = _services.BuildServiceProvider();
+
+        var eventBus = sp.GetRequiredService<IEventBus>();
+
+        eventBus.Publish(new OrderStartedIntegrationEvent(1));
     }
 
     [TestMethod]

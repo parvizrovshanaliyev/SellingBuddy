@@ -38,6 +38,11 @@ public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<Orde
         _logger = logger;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="event"></param>
+    /// <returns></returns>
     public Task Handle(OrderStartedIntegrationEvent @event)
     {
         // fake payment process

@@ -8,12 +8,19 @@ using EventBus.Base.SubManagers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-//using Newtonsoft.Json;
-
 namespace EventBus.Base.Events;
 
 public abstract class BaseEventBus : IEventBus
 {
+    #region fields
+
+    private readonly IServiceProvider _serviceProvider;
+    protected readonly IEventBusSubscriptionManager SubsManager;
+    public EventBusConfig EventBusConfig { get; set; }
+    private readonly ILogger _logger;
+
+    #endregion
+    
     #region ctor
 
     protected BaseEventBus(IServiceProvider serviceProvider, EventBusConfig eventBusConfig)
@@ -35,24 +42,10 @@ public abstract class BaseEventBus : IEventBus
 
     public object DeserializeEvent(string message, Type eventType)
     {
-        try
-        {
-            var eventJson = "{\"Id\":1,\"CreatedDate\":\"2023-08-24T15:50:22.6561522+04:00\"}";
+        var obj = JsonSerializer.Deserialize(message, eventType);
 
-            //var y = JsonConvert.DeserializeObject(message, eventType);
-
-
-            var x = JsonSerializer.Deserialize(message, eventType);
-
-            return x;
-        }
-        catch (JsonException ex)
-        {
-            _logger.LogError(ex, $"Error deserializing event of type: {eventType.Name}");
-            throw;
-        }
+        return obj;
     }
-
 
     public abstract void Publish(IntegrationEvent @event);
 
@@ -79,6 +72,7 @@ public abstract class BaseEventBus : IEventBus
         try
         {
             eventName = ProcessEventName(eventName);
+            
             if (!SubsManager.HasSubscriptionForEvent(eventName)) return false;
 
             var subscriptions = SubsManager.GetHandlersForEvent(eventName);
@@ -103,7 +97,7 @@ public abstract class BaseEventBus : IEventBus
                     var concreteHandlerType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
                     var handleMethod = concreteHandlerType.GetMethod("Handle");
 
-                    await InvokeHandlerAsync(handleMethod, handler, integrationEvent);
+                    await (Task)handleMethod.Invoke(handler, new[] { integrationEvent });
 
                     _logger.LogInformation($"Event handled successfully: {eventType.Name}");
                 }
@@ -113,36 +107,9 @@ public abstract class BaseEventBus : IEventBus
         }
         catch (Exception e)
         {
-            LogAndRethrowException(e);
+            _logger.LogError(e, "An exception occurred while processing the event.");
         }
 
         return false;
     }
-
-    private async Task InvokeHandlerAsync(MethodInfo handleMethod, object handler, object integrationEvent)
-    {
-        try
-        {
-            await (Task)handleMethod.Invoke(handler, new[] { integrationEvent });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, $"Error handling event: {integrationEvent.GetType().Name}");
-            throw;
-        }
-    }
-
-    private void LogAndRethrowException(Exception e)
-    {
-        _logger.LogError(e, "An exception occurred while processing the event.");
-    }
-
-    #region fields
-
-    private readonly IServiceProvider _serviceProvider;
-    protected readonly IEventBusSubscriptionManager SubsManager;
-    public EventBusConfig EventBusConfig { get; set; }
-    private readonly ILogger _logger;
-
-    #endregion
 }

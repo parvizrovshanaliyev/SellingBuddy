@@ -1,9 +1,12 @@
-using System;
 using System.Threading.Tasks;
 using EventBus.Base.Abstraction;
+using Microsoft.Extensions.Logging;
 
 namespace PaymentService.Api.IntegrationEvents.Order;
 
+/// <summary>
+/// 
+/// </summary>
 public class OrderPaymentSuccessIntegrationEvent : IntegrationEvent
 {
     public OrderPaymentSuccessIntegrationEvent(int orderId)
@@ -14,10 +17,26 @@ public class OrderPaymentSuccessIntegrationEvent : IntegrationEvent
     public int OrderId { get; }
 }
 
+/// <summary>
+/// 
+/// </summary>
 public class OrderPaymentSuccessIntegrationEventHandler : IIntegrationEventHandler<OrderPaymentSuccessIntegrationEvent>
 {
+    private readonly ILogger<OrderPaymentSuccessIntegrationEventHandler> _logger;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logger"></param>
+    public OrderPaymentSuccessIntegrationEventHandler(ILogger<OrderPaymentSuccessIntegrationEventHandler> logger)
+    {
+        _logger = logger;
+    }
+
     public Task Handle(OrderPaymentSuccessIntegrationEvent @event)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("OrderPaymentSuccessIntegration event received " + @event.OrderId);
+        
+        return Task.CompletedTask;
     }
 }
