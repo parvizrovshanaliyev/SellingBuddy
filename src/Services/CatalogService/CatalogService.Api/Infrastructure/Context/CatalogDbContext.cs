@@ -6,11 +6,10 @@ namespace CatalogService.Api.Infrastructure.Context;
 
 public class CatalogDbContext : DbContext
 {
-    public const string  DEFAULT_SCHEMA ="catalog";
+    public const string DEFAULT_SCHEMA = "catalog";
 
-    public CatalogDbContext(DbContextOptions<CatalogDbContext> options): base(options)
+    public CatalogDbContext(DbContextOptions<CatalogDbContext> options) : base(options)
     {
-        
     }
 
     public DbSet<CatalogBrand> CatalogBrands { get; set; }

@@ -6,12 +6,12 @@ namespace PaymentService.Api.IntegrationEvents.Order;
 
 public class OrderPaymentSuccessIntegrationEvent : IntegrationEvent
 {
-    public int OrderId { get;}
-
     public OrderPaymentSuccessIntegrationEvent(int orderId)
     {
         OrderId = orderId;
     }
+
+    public int OrderId { get; }
 }
 
 public class OrderPaymentSuccessIntegrationEventHandler : IIntegrationEventHandler<OrderPaymentSuccessIntegrationEvent>

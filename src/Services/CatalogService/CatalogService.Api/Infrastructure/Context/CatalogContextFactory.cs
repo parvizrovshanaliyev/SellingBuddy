@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-
 namespace CatalogService.Api.Infrastructure.Context;
 
 // public class CatalogContextFactory : IDesignTimeDbContextFactory<CatalogDbContext>

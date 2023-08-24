@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace NotificationService
+namespace NotificationService;
+
+internal class Program
 {
-    class Program
+    private static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
+        Console.WriteLine("Hello World!");
     }
 }

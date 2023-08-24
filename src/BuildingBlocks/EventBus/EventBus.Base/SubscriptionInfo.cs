@@ -1,19 +1,18 @@
 ﻿using System;
 
-namespace EventBus.Base
+namespace EventBus.Base;
+
+public class SubscriptionInfo
 {
-    public class SubscriptionInfo
+    public SubscriptionInfo(Type handlerType)
     {
-        public Type HandlerType { get; }
+        HandlerType = handlerType ?? throw new ArgumentException(nameof(handlerType));
+    }
 
-        public SubscriptionInfo(Type handlerType)
-        {
-            HandlerType = handlerType ?? throw new ArgumentException(nameof(handlerType));
-        }
+    public Type HandlerType { get; }
 
-        public static SubscriptionInfo Typed(Type handlerType)
-        {
-            return new SubscriptionInfo(handlerType);
-        }
+    public static SubscriptionInfo Typed(Type handlerType)
+    {
+        return new SubscriptionInfo(handlerType);
     }
 }

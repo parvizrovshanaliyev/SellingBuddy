@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using EventBus.Base;
-using EventBus.Base.Abstraction;
 using EventBus.Factory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +33,7 @@ var builder = WebApplication.CreateBuilder(args);
             Contact = new OpenApiContact
             {
                 Name = "Your Name",
-                Email = "your.email@example.com",
+                Email = "your.email@example.com"
             }
         });
 
@@ -46,10 +45,10 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddTransient<OrderStartedIntegrationEventHandler>();
 
-    builder.Services.AddSingleton<IEventBus>(sp => 
+    builder.Services.AddSingleton(sp =>
         EventBusFactory.Create(
-            config:EventBusConfig.GetRabbitMQConfig(Assembly.GetExecutingAssembly().GetName().Name),
-            serviceProvider:sp));
+            EventBusConfig.GetRabbitMQConfig(Assembly.GetExecutingAssembly().GetName().Name),
+            sp));
 }
 
 

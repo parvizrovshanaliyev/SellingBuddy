@@ -7,19 +7,17 @@ namespace PaymentService.Api.IntegrationEvents.Order;
 
 public class OrderStartedIntegrationEvent : IntegrationEvent
 {
-    public int OrderId { get; set; }
-
     public OrderStartedIntegrationEvent()
     {
-        
     }
 
     public OrderStartedIntegrationEvent(int orderId)
     {
         OrderId = orderId;
     }
-}
 
+    public int OrderId { get; set; }
+}
 
 public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<OrderStartedIntegrationEvent>
 {
@@ -28,12 +26,12 @@ public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<Orde
     private readonly ILogger<OrderStartedIntegrationEventHandler> _logger;
 
     /// <summary>
-    /// 
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="eventBus"></param>
     /// <param name="logger"></param>
-    public OrderStartedIntegrationEventHandler(IConfiguration configuration, IEventBus eventBus, ILogger<OrderStartedIntegrationEventHandler> logger)
+    public OrderStartedIntegrationEventHandler(IConfiguration configuration, IEventBus eventBus,
+        ILogger<OrderStartedIntegrationEventHandler> logger)
     {
         _configuration = configuration;
         _eventBus = eventBus;
@@ -43,25 +41,26 @@ public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<Orde
     public Task Handle(OrderStartedIntegrationEvent @event)
     {
         // fake payment process
-        
-        string keyword= "PaymentSuccess";
-        
-        bool paymentSuccessFlag= _configuration.GetValue<bool>(keyword);
+
+        var keyword = "PaymentSuccess";
+
+        var paymentSuccessFlag = _configuration.GetValue<bool>(keyword);
 
 
         IntegrationEvent paymentEvent = paymentSuccessFlag
             ? new OrderPaymentSuccessIntegrationEvent(@event.OrderId)
             : new OrderPaymentFailedIntegrationEvent(@event.OrderId, "This is a fake error message");
-        
-        _logger.LogInformation("OrderCreatedIntegrationEventHandler in PaymentService is fired with PaymentSuccess : {flag}, orderId : {orderId}",paymentSuccessFlag,@event.Id);
-        
+
+        _logger.LogInformation(
+            "OrderCreatedIntegrationEventHandler in PaymentService is fired with PaymentSuccess : {flag}, orderId : {orderId}",
+            paymentSuccessFlag, @event.Id);
+
         // paymentEvent.CorrelationId = @event.CorrelationId;
 
         // Log.BindProperty("CorrelationId", @event.CorrelationId, false, out LogEventProperty p);
-        
+
         _eventBus.Publish(paymentEvent);
 
         return Task.CompletedTask;
-
     }
 }

@@ -1,30 +1,23 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using EventBus.Base.Abstraction;
 using EventBus.Base.Events;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 
-namespace EventBus.UnitTest.Events.Order
+namespace EventBus.UnitTest.Events.Order;
+
+public class OrderCreatedIntegrationEvent : IntegrationEvent
 {
-    public class OrderCreatedIntegrationEvent : IntegrationEvent
-    {
-        [JsonPropertyName("Id")]
-        public int Id { get; set; }
 
-        public OrderCreatedIntegrationEvent(int id)
-        {
-            Id = id;
-        }
-    }
+}
 
-    public class OrderCreatedIntegrationEventHandler : IIntegrationEventHandler<OrderCreatedIntegrationEvent>
+public class OrderCreatedIntegrationEventHandler : IIntegrationEventHandler<OrderCreatedIntegrationEvent>
+{
+    public Task Handle(OrderCreatedIntegrationEvent @event)
     {
+        Logger.LogMessage("OrderCreatedIntegrationEvent handler called with event: " + @event.Id);
         
-        public Task Handle(OrderCreatedIntegrationEvent @event)
-        {
-            Debug.WriteLine("Order created event worked eventId :{eventId}", @event.Id);
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

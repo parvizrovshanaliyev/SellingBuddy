@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CatalogService.Api.Core.Application.ViewModels;
+﻿namespace CatalogService.Api.Core.Application.ViewModels;
 
 public class PaginatedItemsViewModel<TEntity> where TEntity : class
 {
@@ -12,8 +10,8 @@ public class PaginatedItemsViewModel<TEntity> where TEntity : class
         Data = data;
     }
 
-    public int PageIndex { get;  private set; }
-    public int PageSize { get; private set; }
-    public long Count { get; private set; }
-    public IEnumerable<TEntity> Data { get; private set; }
+    public int PageIndex { get; }
+    public int PageSize { get; }
+    public long Count { get; }
+    public IEnumerable<TEntity> Data { get; }
 }

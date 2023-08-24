@@ -10,9 +10,9 @@ public class CatalogContextSeed
     {
         var policy = Policy.Handle<SqlException>()
             .WaitAndRetryAsync(
-                retryCount: 3,
-                sleepDurationProvider: retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                onRetry: (exception, timeSpan, retryCount, context) =>
+                3,
+                retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (exception, timeSpan, retryCount, context) =>
                 {
                     logger.LogWarning($"Error occurred, retrying (attempt {retryCount})");
                 }

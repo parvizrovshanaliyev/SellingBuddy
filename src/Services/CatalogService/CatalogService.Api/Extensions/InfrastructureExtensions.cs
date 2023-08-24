@@ -21,17 +21,14 @@ public static class InfrastructureExtensions
                     options.EnableSensitiveDataLogging(); // To get parameter values - don't use this in production
                     options.ConfigureWarnings(warningAction =>
                     {
-                        warningAction.Log(new EventId[]
-                        {
-                            CoreEventId.FirstWithoutOrderByAndFilterWarning,
-                            CoreEventId.RowLimitingOperationWithoutOrderByWarning
-                        });
+                        warningAction.Log(CoreEventId.FirstWithoutOrderByAndFilterWarning,
+                            CoreEventId.RowLimitingOperationWithoutOrderByWarning);
                     });
 #endif
                     builder.EnableRetryOnFailure(
-                        maxRetryCount: 5,
-                        maxRetryDelay: TimeSpan.FromSeconds(30),
-                        errorNumbersToAdd: null
+                        5,
+                        TimeSpan.FromSeconds(30),
+                        null
                     );
                 });
 

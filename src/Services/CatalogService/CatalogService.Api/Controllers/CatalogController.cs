@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CatalogService.Api.Core.Application.ViewModels;
+﻿using CatalogService.Api.Core.Application.ViewModels;
 using CatalogService.Api.Core.Domain;
 using CatalogService.Api.Infrastructure.Context;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CatalogService.Api.Controllers;
@@ -22,14 +22,14 @@ public class CatalogController : ControllerBase
     #region Get Catalog Items
 
     /// <summary>
-    /// Retrieves paginated catalog items.
+    ///     Retrieves paginated catalog items.
     /// </summary>
     /// <param name="pageIndex">Page index.</param>
     /// <param name="pageSize">Page size.</param>
     /// <returns>Paginated list of catalog items.</returns>
     /// <remarks>
-    /// Use this endpoint to retrieve a paginated list of catalog items.
-    /// Example request: GET /api/catalog/items?pageIndex=1&amp;pageSize=10
+    ///     Use this endpoint to retrieve a paginated list of catalog items.
+    ///     Example request: GET /api/catalog/items?pageIndex=1&amp;pageSize=10
     /// </remarks>
     [HttpGet("items")]
     [ProducesResponseType(typeof(PaginatedItemsViewModel<CatalogItem>), 200)]
@@ -51,12 +51,12 @@ public class CatalogController : ControllerBase
     #region Get Catalog Brands
 
     /// <summary>
-    /// Retrieves a list of catalog brands.
+    ///     Retrieves a list of catalog brands.
     /// </summary>
     /// <returns>List of catalog brands.</returns>
     /// <remarks>
-    /// Use this endpoint to retrieve a list of available catalog brands.
-    /// Example request: GET /api/catalog/brands
+    ///     Use this endpoint to retrieve a list of available catalog brands.
+    ///     Example request: GET /api/catalog/brands
     /// </remarks>
     [HttpGet("brands")]
     [ProducesResponseType(typeof(IEnumerable<CatalogBrand>), 200)]
@@ -71,12 +71,12 @@ public class CatalogController : ControllerBase
     #region Get Catalog Types
 
     /// <summary>
-    /// Retrieves a list of catalog types.
+    ///     Retrieves a list of catalog types.
     /// </summary>
     /// <returns>List of catalog types.</returns>
     /// <remarks>
-    /// Use this endpoint to retrieve a list of available catalog types.
-    /// Example request: GET /api/catalog/types
+    ///     Use this endpoint to retrieve a list of available catalog types.
+    ///     Example request: GET /api/catalog/types
     /// </remarks>
     [HttpGet("types")]
     [ProducesResponseType(typeof(IEnumerable<CatalogType>), 200)]
@@ -91,15 +91,15 @@ public class CatalogController : ControllerBase
     #region Create Catalog Item
 
     /// <summary>
-    /// Creates a new catalog item.
+    ///     Creates a new catalog item.
     /// </summary>
     /// <param name="catalogItem">Catalog item data.</param>
     /// <returns>Created catalog item.</returns>
     /// <remarks>
-    /// Use this endpoint to create a new catalog item.
-    /// Example request: POST /api/catalog
-    /// Example request body:
-    /// {
+    ///     Use this endpoint to create a new catalog item.
+    ///     Example request: POST /api/catalog
+    ///     Example request body:
+    ///     {
     ///     "name": "New Item",
     ///     "description": "This is a new item.",
     ///     "price": 19.99,
@@ -107,17 +107,14 @@ public class CatalogController : ControllerBase
     ///     "pictureUri": "https://example.com/new_item.jpg",
     ///     "catalogTypeId": 1,
     ///     "catalogBrandId": 2
-    /// }
+    ///     }
     /// </remarks>
     [HttpPost]
     [ProducesResponseType(201)]
     [ProducesResponseType(400)]
     public async Task<IActionResult> CreateCatalogItem([FromBody] CatalogItem catalogItem)
     {
-        if (catalogItem == null)
-        {
-            return BadRequest("Catalog item data is invalid.");
-        }
+        if (catalogItem == null) return BadRequest("Catalog item data is invalid.");
 
         _context.CatalogItems.Add(catalogItem);
         await _context.SaveChangesAsync();

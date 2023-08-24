@@ -3,7 +3,6 @@ using CatalogService.Api.Extensions;
 using CatalogService.Api.Infrastructure;
 using CatalogService.Api.Infrastructure.Context;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +22,7 @@ builder.Services.AddSwaggerGen(c =>
         Contact = new OpenApiContact
         {
             Name = "Your Name",
-            Email = "your.email@example.com",
+            Email = "your.email@example.com"
         }
     });
 
@@ -42,10 +41,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog API v1");
-    });
+    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog API v1"); });
 }
 
 app.UseHttpsRedirection();
@@ -61,4 +57,3 @@ app.MigrateDbContext<CatalogDbContext>((context, services) =>
 });
 
 app.Run();
-
