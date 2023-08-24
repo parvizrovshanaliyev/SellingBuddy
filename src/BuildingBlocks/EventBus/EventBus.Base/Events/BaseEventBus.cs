@@ -1,12 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Reflection;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using EventBus.Base.Abstraction;
 using EventBus.Base.SubManagers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using JsonException = System.Text.Json.JsonException;
+using JsonSerializer = System.Text.Json.JsonSerializer;
+
+//using Newtonsoft.Json;
 
 namespace EventBus.Base.Events
 {
@@ -14,9 +19,10 @@ namespace EventBus.Base.Events
     {
         #region fields
 
-        protected readonly IServiceProvider ServiceProvider;
+        private readonly IServiceProvider _serviceProvider;
         protected readonly IEventBusSubscriptionManager SubsManager;
         public EventBusConfig EventBusConfig { get; set; }
+        private readonly ILogger _logger;
 
         #endregion
 
@@ -24,14 +30,16 @@ namespace EventBus.Base.Events
 
         protected BaseEventBus(IServiceProvider serviceProvider, EventBusConfig eventBusConfig)
         {
-            ServiceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
             SubsManager = new InMemoryEventBusSubscriptionManager(ProcessEventName);
             EventBusConfig = eventBusConfig;
+
+            _logger = serviceProvider.GetService(typeof(ILogger<BaseEventBus>)) as ILogger<BaseEventBus>;
         }
 
         #endregion
 
-        public virtual string ProcessEventName(string eventName)
+        protected virtual string ProcessEventName(string eventName)
         {
             if (EventBusConfig.DeleteEventPrefix)
             {
@@ -46,7 +54,7 @@ namespace EventBus.Base.Events
             return eventName;
         }
 
-        public virtual string GetSubName(string eventName)
+        protected virtual string GetSubName(string eventName)
         {
             return $"{EventBusConfig.SubscriberClientAppName}.{ProcessEventName(eventName)}";
         }
@@ -59,52 +67,88 @@ namespace EventBus.Base.Events
 
         protected async Task<bool> ProcessEvent(string eventName, string message)
         {
-            // Preprocess the event name
-            eventName = ProcessEventName(eventName);
-
-            // Check if there are any subscriptions for the event
-            if (!SubsManager.HasSubscriptionForEvent(eventName))
+            try
             {
-                // No subscriptions found, no need to process further
-                return false;
-            }
-
-            // Retrieve the list of subscriptions for the event
-            var subscriptions = SubsManager.GetHandlersForEvent(eventName);
-
-            using (var scope = ServiceProvider.CreateScope())
-            {
-                foreach (var subscription in subscriptions)
+                eventName = ProcessEventName(eventName);
+                if (!SubsManager.HasSubscriptionForEvent(eventName))
                 {
-                    // Get the handler for the subscription
-                    var handler = ServiceProvider.GetService(subscription.HandlerType);
+                    return false;
+                }
 
-                    // If handler is not available, skip to the next subscription
-                    if (handler == null)
+                var subscriptions = SubsManager.GetHandlersForEvent(eventName);
+
+                using (var scope = _serviceProvider.CreateScope())
+                {
+                    foreach (var subscription in subscriptions)
                     {
-                        continue;
+                        var handler = _serviceProvider.GetService(subscription.HandlerType);
+
+                        if (handler == null)
+                        {
+                            _logger.LogWarning($"Handler not available for subscription: {subscription.HandlerType}");
+                            continue;
+                        }
+
+                        var eventType = SubsManager.GetEventTypeByName(
+                            $"{EventBusConfig.EventNamePrefix}{eventName}{EventBusConfig.EventNameSuffix}");
+
+                        var integrationEvent = DeserializeEvent(message, eventType);
+
+                        var concreteHandlerType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
+                        var handleMethod = concreteHandlerType.GetMethod("Handle");
+
+                        await InvokeHandlerAsync(handleMethod, handler, integrationEvent);
+
+                        _logger.LogInformation($"Event handled successfully: {eventType.Name}");
                     }
 
-                    // Get the event type based on the processed event name
-                    var eventType = SubsManager.GetEventTypeByName(
-                        $"{EventBusConfig.EventNamePrefix}{eventName}{EventBusConfig.EventNameSuffix}");
-
-                    // Deserialize the message to the corresponding event type
-                    var integrationEvent = JsonConvert.DeserializeObject(message, eventType);
-
-                    // Create the concrete handler type using the event type
-                    var concreteType = typeof(IIntegrationEventHandler<>).MakeGenericType(eventType);
-
-                    // Get the Handle method of the handler
-                    var handleMethod = concreteType.GetMethod("Handle");
-
-                    // Invoke the Handle method asynchronously with the integration event
-                    await (Task)handleMethod.Invoke(handler, new object[] { integrationEvent });
+                    return true;
                 }
             }
+            catch (Exception e)
+            {
+                LogAndRethrowException(e);
+            }
 
-            // All subscriptions have been processed
-            return true;
+            return false;
+        }
+
+        public object DeserializeEvent(string message, Type eventType)
+        {
+            try
+            {
+                var eventJson = "{\"Id\":1,\"CreatedDate\":\"2023-08-24T15:50:22.6561522+04:00\"}";
+                
+                //var y = JsonConvert.DeserializeObject(message, eventType);
+                
+
+                var x = JsonSerializer.Deserialize(message, eventType);
+                
+                return x;
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, $"Error deserializing event of type: {eventType.Name}");
+                throw;
+            }
+        }
+
+        private async Task InvokeHandlerAsync(MethodInfo handleMethod, object handler, object integrationEvent)
+        {
+            try
+            {
+                await (Task)handleMethod.Invoke(handler, new object[] { integrationEvent });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error handling event: {integrationEvent.GetType().Name}");
+                throw;
+            }
+        }
+
+        private void LogAndRethrowException(Exception e)
+        {
+            _logger.LogError(e, "An exception occurred while processing the event.");
         }
 
 

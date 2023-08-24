@@ -1,5 +1,8 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+
+
+//using Newtonsoft.Json;
 
 namespace EventBus.Base.Events
 {
@@ -19,9 +22,8 @@ namespace EventBus.Base.Events
             CreatedDate = createdDate;
         }
 
-        [JsonProperty]
-        public Guid Id { get; private set; }
-        [JsonProperty]
+        public  Guid Id { get; private set; }
+
         public DateTime CreatedDate { get; private set; }
 
     }

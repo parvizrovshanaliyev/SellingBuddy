@@ -12,7 +12,7 @@ namespace EventBus.Base.SubManagers
         {
             _handlers = new Dictionary<string, List<SubscriptionInfo>>();
             _eventTypes = new List<Type>();
-            this.EventNameGetter = eventNameGetter;
+            EventNameGetter = eventNameGetter;
         }
         /// <summary>
         /// handlerlerimizi saxlayacaq
@@ -39,7 +39,13 @@ namespace EventBus.Base.SubManagers
         {
             var eventName = GetEventKey<T>();
 
-            AddSubscription(typeof(T), eventName);
+
+            AddSubscription(typeof(TH), eventName);
+
+            if (!_eventTypes.Contains(typeof(T)))
+            {
+                _eventTypes.Add(typeof(T));
+            }
         }
 
         private void AddSubscription(Type handlerType, string eventName)

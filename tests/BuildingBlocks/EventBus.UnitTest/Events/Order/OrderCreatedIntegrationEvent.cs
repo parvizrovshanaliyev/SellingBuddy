@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using EventBus.Base.Abstraction;
 using EventBus.Base.Events;
@@ -7,7 +9,8 @@ namespace EventBus.UnitTest.Events.Order
 {
     public class OrderCreatedIntegrationEvent : IntegrationEvent
     {
-        public new int Id { get; set; }
+        [JsonPropertyName("Id")]
+        public int Id { get; set; }
 
         public OrderCreatedIntegrationEvent(int id)
         {
@@ -15,11 +18,12 @@ namespace EventBus.UnitTest.Events.Order
         }
     }
 
-    public class OrderCreatedIntegrationEventHandlers : IIntegrationEventHandler<OrderCreatedIntegrationEvent>
+    public class OrderCreatedIntegrationEventHandler : IIntegrationEventHandler<OrderCreatedIntegrationEvent>
     {
+        
         public Task Handle(OrderCreatedIntegrationEvent @event)
         {
-            Console.WriteLine("Order created event worked eventId :{eventId}", @event.Id);
+            Debug.WriteLine("Order created event worked eventId :{eventId}", @event.Id);
             return Task.CompletedTask;
         }
     }
