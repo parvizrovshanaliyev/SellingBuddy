@@ -1,24 +1,34 @@
-﻿using System.Threading.Tasks;
-using EventBus.Base.Abstraction;
+﻿using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace PaymentService.Api.IntegrationEvents.Order;
 
+/// <summary>
+/// 
+/// </summary>
 public class OrderStartedIntegrationEvent : IntegrationEvent
 {
-    public OrderStartedIntegrationEvent()
-    {
-    }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="orderId"></param>
+    [JsonConstructor]
     public OrderStartedIntegrationEvent(int orderId)
     {
         OrderId = orderId;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public int OrderId { get; set; }
 }
 
+/// <summary>
+/// 
+/// </summary>
 public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<OrderStartedIntegrationEvent>
 {
     private readonly IConfiguration _configuration;
@@ -46,11 +56,8 @@ public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<Orde
     public Task Handle(OrderStartedIntegrationEvent @event)
     {
         // fake payment process
-
         var keyword = "PaymentSuccess";
-
         var paymentSuccessFlag = _configuration.GetValue<bool>(keyword);
-
 
         IntegrationEvent paymentEvent = paymentSuccessFlag
             ? new OrderPaymentSuccessIntegrationEvent(@event.OrderId)
@@ -58,7 +65,7 @@ public class OrderStartedIntegrationEventHandler : IIntegrationEventHandler<Orde
 
         _logger.LogInformation(
             "OrderCreatedIntegrationEventHandler in PaymentService is fired with PaymentSuccess : {flag}, orderId : {orderId}",
-            paymentSuccessFlag, @event.Id);
+            paymentSuccessFlag, @event.OrderId);
 
         // paymentEvent.CorrelationId = @event.CorrelationId;
 

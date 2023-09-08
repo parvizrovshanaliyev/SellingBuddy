@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using EventBus.Base;
 using EventBus.Base.Events;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace EventBus.RabbitMQ;
 
@@ -82,9 +84,13 @@ public class EventBusRabbitMQ : BaseEventBus
         _consumerChannel.ExchangeDeclare(EventBusConfig.DefaultTopicName,
             "direct"); // Ensure exchange exists while publishing
 
+        // var message =IntegrationEvent.Serialize(@event);
         
+        var message = JsonConvert.SerializeObject(@event, Formatting.None, new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        });
 
-        var message = JsonSerializer.Serialize(@event);
         var body = Encoding.UTF8.GetBytes(message);
 
         policy.Execute(() =>
@@ -100,7 +106,7 @@ public class EventBusRabbitMQ : BaseEventBus
             //     false,
             //     false,
             //     null);
-            
+
             // _consumerChannel.QueueBind(queue: GetSubName(eventName),
             //     exchange: EventBusConfig.DefaultTopicName,
             //     routingKey: eventName);

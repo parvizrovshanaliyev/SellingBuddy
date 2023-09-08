@@ -1,5 +1,4 @@
-﻿using EventBus.Base.Abstraction;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using PaymentService.Api.IntegrationEvents.Order;
 

@@ -1,25 +1,18 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace PaymentService.Api.IntegrationEvents.Order;
+namespace NotificationService.IntegrationEvents.Order;
 
 /// <summary>
 /// 
 /// </summary>
 public class OrderPaymentSuccessIntegrationEvent : IntegrationEvent
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="orderId"></param>
     public OrderPaymentSuccessIntegrationEvent(int orderId)
     {
         OrderId = orderId;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public int OrderId { get; }
 }
 
@@ -39,14 +32,11 @@ public class OrderPaymentSuccessIntegrationEventHandler : IIntegrationEventHandl
         _logger = logger;
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="event"></param>
-    /// <returns></returns>
     public Task Handle(OrderPaymentSuccessIntegrationEvent @event)
     {
-        _logger.LogInformation("OrderPaymentSuccessIntegration event received " + @event.OrderId);
+        // Send Fail Notification (Sms, Email, Push)
+        
+        _logger.LogInformation($"Order payment success with OrderId:  { @event.OrderId}");
         
         return Task.CompletedTask;
     }
