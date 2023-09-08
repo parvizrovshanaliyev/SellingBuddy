@@ -82,10 +82,7 @@ public class EventBusRabbitMQ : BaseEventBus
         _consumerChannel.ExchangeDeclare(EventBusConfig.DefaultTopicName,
             "direct"); // Ensure exchange exists while publishing
 
-        // TODO: This should probably not be here
-        // _consumerChannel.QueueBind(queue: GetSubName(eventName),
-        //     exchange: EventBusConfig.DefaultTopicName,
-        //     routingKey: eventName);
+        
 
         var message = JsonSerializer.Serialize(@event);
         var body = Encoding.UTF8.GetBytes(message);
@@ -95,11 +92,18 @@ public class EventBusRabbitMQ : BaseEventBus
             var properties = _consumerChannel.CreateBasicProperties();
             properties.DeliveryMode = 2; // persistent
 
-            _consumerChannel.QueueDeclare(GetSubName(eventName), // Ensure queue exists while publishing
-                true,
-                false,
-                false,
-                null);
+            /*
+             * Publish edenin mesuliyyetinde olmadigina gore queue yaradilmasi ve bind subscribe terefinde olmalidir
+             */
+            // _consumerChannel.QueueDeclare(GetSubName(eventName), // Ensure queue exists while publishing
+            //     true,
+            //     false,
+            //     false,
+            //     null);
+            
+            // _consumerChannel.QueueBind(queue: GetSubName(eventName),
+            //     exchange: EventBusConfig.DefaultTopicName,
+            //     routingKey: eventName);
 
             _consumerChannel.BasicPublish(
                 EventBusConfig.DefaultTopicName,
