@@ -1,3 +1,4 @@
+using IdentityService.Api.Application.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,8 @@ public class Startup
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "IdentityService.Api", Version = "v1" });
         });
+        
+        services.AddScoped<IIdentityService , Application.Services.IdentityService>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -18,6 +18,14 @@ namespace EventBus.RabbitMQ;
 
 public class EventBusRabbitMQ : BaseEventBus
 {
+    #region fields
+
+    private readonly RabbitMQPersistentConnection _persistentConnection;
+    private readonly IModel _consumerChannel;
+    private readonly ILogger _logger;
+
+    #endregion
+    
     #region ctors
 
     public EventBusRabbitMQ(
@@ -51,14 +59,6 @@ public class EventBusRabbitMQ : BaseEventBus
 
         _logger = serviceProvider.GetService(typeof(ILogger<EventBusRabbitMQ>)) as ILogger<EventBusRabbitMQ>;
     }
-
-    #endregion
-
-    #region fields
-
-    private readonly RabbitMQPersistentConnection _persistentConnection;
-    private readonly IModel _consumerChannel;
-    private readonly ILogger _logger;
 
     #endregion
 
@@ -121,7 +121,6 @@ public class EventBusRabbitMQ : BaseEventBus
         });
     }
 
-
     public override void Subscribe<T, TH>()
     {
         var eventName = typeof(T).Name; // example OrderCreatedIntegrationEvent
@@ -155,7 +154,6 @@ public class EventBusRabbitMQ : BaseEventBus
         _logger.LogInformation($"Subscription added for event: {eventName}");
         StartBasicConsume(eventName);
     }
-
 
     public override void UnSubscribe<T, TH>()
     {
