@@ -1,0 +1,59 @@
+{
+  "SwaggerEndPoints": [
+    {
+      "Key": "auth-key",
+      "TransformByOcelotConfig": true,
+      "Config": [
+        {
+          "Name": "Identity.API",
+          "Version": "1.0",
+          "Url": "http://localhost:5001/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "order-key",
+      "TransformByOcelotConfig": true,
+      "Config": [
+        {
+          "Name": "Order.API",
+          "Version": "1.0",
+          "Url": "http://localhost:5002/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "basket-key",
+        "TransformByOcelotConfig": true,
+        "Config": [
+          {
+            "Name": "Basket.API",
+            "Version": "1.0",
+            "Url": "http://localhost:5003/swagger/v1/swagger.json"
+          }
+        ]
+    },
+    {
+      "Key": "catalog-key",
+      "TransformByOcelotConfig": true,
+      "Config": [
+        {
+          "Name": "Catalog.API",
+          "Version": "1.0",
+          "Url": "http://localhost:5004/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "payment-key",
+      "TransformByOcelotConfig": true,
+      "Config": [
+        {
+          "Name": "Payment.API",
+          "Version": "1.0",
+          "Url": "http://localhost:5005/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}
