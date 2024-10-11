@@ -1,24 +1,14 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/{everything}",
+      "UseServiceDiscovery": true,
+      "ServiceName": "PaymentService",
+      "DownstreamPathTemplate": "/api/payment/{everything}",  
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": "5001"
-        }
-      ],
       "UpstreamPathTemplate": "/payment/{everything}",
-      "UpstreamHttpMethod": [
-        "GET",
-        "POST",
-        "PUT",
-        "DELETE"
-      ],
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
       "SwaggerKey": "payment-key",
       "RateLimitOptions": {
-        "ClientWhitelist": [],
         "EnableRateLimiting": true,
         "Period": "2s",
         "PeriodTimespan": 10,

@@ -24,14 +24,14 @@
     },
     {
       "Key": "basket-key",
-        "TransformByOcelotConfig": true,
-        "Config": [
-          {
-            "Name": "Basket.API",
-            "Version": "1.0",
-            "Url": "http://localhost:5003/swagger/v1/swagger.json"
-          }
-        ]
+      "TransformByOcelotConfig": true,
+      "Config": [
+        {
+          "Name": "Basket.API",
+          "Version": "1.0",
+          "Url": "http://localhost:5003/swagger/v1/swagger.json"
+        }
+      ]
     },
     {
       "Key": "catalog-key",

@@ -1,0 +1,19 @@
+{
+  "Routes": [
+    {
+      "UseServiceDiscovery": true,
+      "ServiceName": "BasketService",
+      "DownstreamPathTemplate": "/api/basket/{everything}",  
+      "DownstreamScheme": "http",
+      "UpstreamPathTemplate": "/basket/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "basket-key",
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "2s",
+        "PeriodTimespan": 10,
+        "Limit": 150
+      }
+    }
+  ]
+}
