@@ -1,8 +1,15 @@
-﻿using Consul;
+﻿using System;
+using System.Linq;
+using Consul;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
-namespace CatalogService.Api.Extensions;
+namespace IdentityService.Api.Extensions;
 
 public static class ConsulRegistration
 {
@@ -17,21 +24,35 @@ public static class ConsulRegistration
         return services;
     }
 
-    public static IApplicationBuilder RegisterWithConsul(this IApplicationBuilder app, IConfiguration configuration,
-        IHostApplicationLifetime lifetime)
+    public static IApplicationBuilder RegisterWithConsul(
+        this IApplicationBuilder app,
+        IConfiguration configuration,
+        IHostApplicationLifetime lifetime,
+        string defaultUrl)
     {
         var consulClient = app.ApplicationServices.GetRequiredService<IConsulClient>();
         var loggingFactory = app.ApplicationServices.GetRequiredService<ILoggerFactory>();
 
         var logger = loggingFactory.CreateLogger<IApplicationBuilder>();
+        
+        // Retrieve the server addresses
+        var serverAddresses = app.ServerFeatures.Get<IServerAddressesFeature>();
 
-        //Get server IP address
-        var features = app.Properties["server.Features"] as FeatureCollection;
-        var addresses = features.Get<IServerAddressesFeature>();
-        var address = addresses.Addresses.First();
+        if (serverAddresses == null || !serverAddresses.Addresses.Any())
+        {
+            if (string.IsNullOrWhiteSpace(defaultUrl))
+            {
+                throw new Exception("No server addresses were configured, and no default URL was provided.");
+            }
 
-        // Register service with consul
+            serverAddresses?.Addresses.Add(defaultUrl);
+        }
+
+        // Get the first address (you can adapt this logic as needed)
+        var address = serverAddresses?.Addresses.FirstOrDefault() ?? defaultUrl;
         var uri = new Uri(address);
+        
+        // Register service with consul
         var registration = new AgentServiceRegistration()
         {
             ID = configuration["ConsulConfig:ServiceId"],

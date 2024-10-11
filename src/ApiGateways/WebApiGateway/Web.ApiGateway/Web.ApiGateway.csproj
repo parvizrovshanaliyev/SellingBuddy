@@ -2,10 +2,34 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <!--disable missing comment warning-->
+        <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="MMLib.SwaggerForOcelot" Version="6.2.0"/>
+        <PackageReference Include="Ocelot" Version="18.0.0"/>
+        <PackageReference Include="Ocelot.Provider.Polly" Version="18.0.0"/>
+        <PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <Content Update="OcelotConfigs.Local\ocelot.auth.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="ocelot.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

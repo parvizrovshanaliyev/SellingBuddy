@@ -5,6 +5,7 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E04719C-37E3-4D4F-A12B-2CAD7A8B1B4B}"
 	ProjectSection(SolutionItems) = preProject
+		docs\service-discovery.png = docs\service-discovery.png
 		ServiceUrls.txt = ServiceUrls.txt
 	EndProjectSection
 EndProject
@@ -70,7 +71,30 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{15EF12EF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{26DB04D3-2481-4BA3-B25F-541173249BDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventBus.UnitTest", "tests\BuildingBlocks\EventBus.UnitTest\EventBus.UnitTest.csproj", "{5DE071ED-1704-430A-A56E-F7D1BB1529BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.UnitTest", "tests\BuildingBlocks\EventBus.UnitTest\EventBus.UnitTest.csproj", "{5DE071ED-1704-430A-A56E-F7D1BB1529BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker-compose-files", "docker-compose-files", "{272AC455-512F-4C5C-8F5E-0C5660281256}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rabbitmq", "rabbitmq", "{CAFC2655-A66E-422B-98AA-4BC9264AB949}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose-files\rabbitmq\docker-compose.yml = docker-compose-files\rabbitmq\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "redis", "redis", "{C61B57FB-7C72-47C6-A4C7-2822009EF822}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose-files\redis\docker-compose.yml = docker-compose-files\redis\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "consul", "consul", "{B791E1FB-8BA9-4AB5-A653-E5509821415F}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose-files\consul\docker-compose.yml = docker-compose-files\consul\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sqlserver", "sqlserver", "{FF17B805-731F-4BF0-8CF5-F94A165DF6A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{6E7E4A70-6089-426E-8407-9DBFBA7F5684}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Shared", "src\Services\Shared\Api.Shared\Api.Shared.csproj", "{9C6A0371-A218-4055-B90D-EAD9443BD3BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,6 +166,10 @@ Global
 		{5DE071ED-1704-430A-A56E-F7D1BB1529BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DE071ED-1704-430A-A56E-F7D1BB1529BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DE071ED-1704-430A-A56E-F7D1BB1529BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C6A0371-A218-4055-B90D-EAD9443BD3BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C6A0371-A218-4055-B90D-EAD9443BD3BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C6A0371-A218-4055-B90D-EAD9443BD3BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C6A0371-A218-4055-B90D-EAD9443BD3BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -177,6 +205,12 @@ Global
 		{BF2DE2F3-EE2A-43A7-B9DC-5AA4793C3793} = {1A7254EE-D0DE-4ED6-BFBD-FD94672C2585}
 		{26DB04D3-2481-4BA3-B25F-541173249BDF} = {15EF12EF-F58E-48F0-9569-467BF63DC61F}
 		{5DE071ED-1704-430A-A56E-F7D1BB1529BA} = {26DB04D3-2481-4BA3-B25F-541173249BDF}
+		{CAFC2655-A66E-422B-98AA-4BC9264AB949} = {272AC455-512F-4C5C-8F5E-0C5660281256}
+		{C61B57FB-7C72-47C6-A4C7-2822009EF822} = {272AC455-512F-4C5C-8F5E-0C5660281256}
+		{B791E1FB-8BA9-4AB5-A653-E5509821415F} = {272AC455-512F-4C5C-8F5E-0C5660281256}
+		{FF17B805-731F-4BF0-8CF5-F94A165DF6A5} = {272AC455-512F-4C5C-8F5E-0C5660281256}
+		{6E7E4A70-6089-426E-8407-9DBFBA7F5684} = {2BD47C96-4E55-4850-89D2-DB22F6146B1E}
+		{9C6A0371-A218-4055-B90D-EAD9443BD3BD} = {6E7E4A70-6089-426E-8407-9DBFBA7F5684}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {560EC443-C067-455F-89B0-46B971F3DFC5}

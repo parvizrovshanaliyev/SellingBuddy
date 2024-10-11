@@ -36,8 +36,6 @@ public class Startup
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderService.Api v1"));
         }
 
-        app.UseHttpsRedirection();
-
         app.UseRouting();
 
         app.UseAuthorization();

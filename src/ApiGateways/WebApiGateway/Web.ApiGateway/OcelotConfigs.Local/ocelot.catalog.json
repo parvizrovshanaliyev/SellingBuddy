@@ -1,19 +1,23 @@
 {
   "Routes": [
     {
-      "UseServiceDiscovery": true,
-      "ServiceName": "CatalogService",
-      "DownstreamPathTemplate": "/api/catalog/{everything}",  
+      "ServiceName": "catalog-service",
+      "DownstreamPathTemplate": "/api/catalog/{everything}",
       "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5004
+        }
+      ],
       "UpstreamPathTemplate": "/catalog/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "catalog-key",
-      "RateLimitOptions": {
-        "EnableRateLimiting": true,
-        "Period": "2s",
-        "PeriodTimespan": 10,
-        "Limit": 150
-      }
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+        "SwaggerKey": "catalog-key"
     }
   ]
 }

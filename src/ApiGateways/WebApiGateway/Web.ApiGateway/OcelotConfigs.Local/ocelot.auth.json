@@ -1,19 +1,26 @@
 {
   "Routes": [
     {
-      "UseServiceDiscovery": true,
-      "ServiceName": "AuthService",
-      "DownstreamPathTemplate": "/api/auth/{everything}",  
+      "ServiceName": "auth-service",
+      "DownstreamPathTemplate": "/api/auth/{everything}",
       "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
       "UpstreamPathTemplate": "/auth/{everything}",
-      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
-      "SwaggerKey": "auth-key",
-      "RateLimitOptions": {
-        "EnableRateLimiting": true,
-        "Period": "2s",
-        "PeriodTimespan": 10,
-        "Limit": 150
-      }
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "SwaggerKey": "auth-key"
     }
-  ]
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5000"
+  }
 }

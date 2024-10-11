@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using IdentityService.Api.Application.Models;
 using IdentityService.Api.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityService.Api.Controllers;
 
@@ -17,6 +18,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         var response = await _identityService.LoginAsync(request);
