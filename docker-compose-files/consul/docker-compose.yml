@@ -1,9 +1,9 @@
 version: '3.4'
 
-services: 
+services:
   s_consul:
     container_name: consul
-    image: consul
+    image: consul:1.10.0
     ports:
       - "8500:8500"
       - "8600:8600/tcp"
