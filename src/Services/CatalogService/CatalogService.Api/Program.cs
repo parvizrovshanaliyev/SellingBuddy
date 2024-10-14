@@ -1,6 +1,7 @@
 using System.Net;
 using System.Reflection;
 using Api.Shared.Consul;
+using Api.Shared.Host;
 using CatalogService.Api.Extensions;
 using CatalogService.Api.Infrastructure;
 using CatalogService.Api.Infrastructure.Context;
@@ -8,30 +9,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get the environment-configured URLs (fallback to default if not set)
-var urls = builder.Configuration["ASPNETCORE_URLS"] ?? "http://localhost:5001";
-var uri = new Uri(urls);
-var port = uri.Port;
-
-builder.WebHost.UseKestrel(options =>
-{
-    // Get the server's local IP address
-    var ip = Dns.GetHostAddresses(Dns.GetHostName())
-        .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
-
-    if (ip == null)
-    {
-        throw new Exception("No IPv4 address found for the server.");
-    }
-
-    // Listen on the server's IP on the specified port for HTTP
-    options.Listen(ip, port);
-    
-    urls = $"http://{ip}:{port}";
-
-    // Also listen on any IP address on the specified port
-    options.Listen(IPAddress.Any, port);
-});
+builder.WebHost.ConfiguredKestrel(builder.Configuration, out var urls);
 
 // Add services to the container.
 builder.Services.AddControllers();

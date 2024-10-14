@@ -7,5 +7,15 @@
     <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="..\..\..\SharedFiles\SharedAppSettings.json" Link="SharedAppSettings.json" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Base\EventBus.Base.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Factory\EventBus.Factory.csproj" />
+      <ProjectReference Include="..\..\Shared\Api.Shared\Api.Shared.csproj" />
+    </ItemGroup>
 
 </Project>

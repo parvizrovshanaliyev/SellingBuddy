@@ -20,4 +20,8 @@
       <ProjectReference Include="..\..\Shared\Api.Shared\Api.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="..\..\..\SharedFiles\SharedAppSettings.json" Link="SharedAppSettings.json" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
 </Project>

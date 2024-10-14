@@ -1,4 +1,6 @@
-﻿namespace EventBus.Base;
+﻿using Microsoft.Extensions.Configuration;
+
+namespace EventBus.Base;
 
 public class EventBusConfig
 {
@@ -14,8 +16,11 @@ public class EventBusConfig
     public bool DeleteEventPrefix => !string.IsNullOrEmpty(EventNamePrefix);
     public bool DeleteEventSuffix => !string.IsNullOrEmpty(EventNameSuffix);
 
-    public static EventBusConfig GetRabbitMQConfig(string subscriberClientAppName)
+    public static EventBusConfig GetRabbitMQConfig(string subscriberClientAppName, IConfiguration configuration = null)
     {
+        var eventBusConnectionString = configuration?.GetConnectionString("EventBusConnection") ?? 
+                                       "amqps://wtjzmmla:1GNs9JSK1kfinUeiyyahyyay3URIUxaS@toad.rmq.cloudamqp.com/wtjzmmla";
+
         return new EventBusConfig
         {
             ConnectionRetryCount = 5,
@@ -23,8 +28,7 @@ public class EventBusConfig
             DefaultTopicName = "SellingBuddyTopicName",
             EventBusType = EventBusType.RabbitMQ,
             EventNameSuffix = "IntegrationEvent",
-            EventBusConnectionString =
-                "amqps://wtjzmmla:1GNs9JSK1kfinUeiyyahyyay3URIUxaS@toad.rmq.cloudamqp.com/wtjzmmla"
+            EventBusConnectionString = eventBusConnectionString
             //Connection = new ConnectionFactory ()
             //{
             // HostName = "localhost",

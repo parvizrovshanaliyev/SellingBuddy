@@ -1,0 +1,14 @@
+{
+  "JwtConfig": {
+    "Secret": "your-secret-key",
+    "Issuer": "your-issuer",
+    "Audience": "your-audience",
+    "AccessTokenExpiration": 60,
+    "RefreshTokenExpiration": 1440
+  },
+  "CacheConfig": {
+    "UseDistributedCache": true,
+    "PreferRedis": true,
+    "RedisURL": "localhost:6379"
+  }
+}

@@ -1,15 +1,7 @@
-using System;
-using System.Linq;
-using System.Net;
+using Api.Shared.Auth;
 using Api.Shared.Consul;
+using Api.Shared.Host;
 using IdentityService.Api.Application.Services;
-using IdentityService.Api.Extensions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace IdentityService.Api;
@@ -20,30 +12,19 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         
-        // Get the environment-configured URLs (fallback to default if not set)
-        var urls = builder.Configuration["ASPNETCORE_URLS"] ?? "http://localhost:5001";
-        var uri = new Uri(urls);
-        var port = uri.Port;
+        builder.Configuration
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddJsonFile("SharedAppSettings.json", optional: true, reloadOnChange: true)
+            .AddJsonFile($"SharedAppSettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables();
         
-        builder.WebHost.UseKestrel(options =>
-        {
-            // Get the server's local IP address
-            var ip = Dns.GetHostAddresses(Dns.GetHostName())
-                .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork);
+        builder.WebHost.ConfiguredKestrel(builder.Configuration, out var urls);
         
-            if (ip == null)
-            {
-                throw new Exception("No IPv4 address found for the server.");
-            }
+        builder.Services.AddConsulClient(builder.Configuration);
         
-            // Listen on the server's IP on the specified port for HTTP
-            options.Listen(ip, port);
-        
-            urls = $"http://{ip}:{port}";
-        
-            // Also listen on any IP address on the specified port
-            options.Listen(IPAddress.Any, port);
-        });
+        builder.Services.AddJwtConfiguration(builder.Configuration);
 
         // Add services to the container.
         builder.Services.AddControllers();
@@ -52,11 +33,12 @@ public class Program
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "IdentityService.Api", Version = "v1" });
         });
         builder.Services.AddScoped<IIdentityService, IdentityService.Api.Application.Services.IdentityService>();
-        builder.Services.AddConsulClient(builder.Configuration);
+        
         
         var app = builder.Build();
         
         var registeredUrl = urls.Split(';').First();
+        
         // Register the service with Consul, providing a default URL in case none is configured
         app.UseConsulRegister(
             builder.Configuration,

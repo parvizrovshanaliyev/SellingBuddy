@@ -96,6 +96,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{6E7E4A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Shared", "src\Services\Shared\Api.Shared\Api.Shared.csproj", "{9C6A0371-A218-4055-B90D-EAD9443BD3BD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedFiles", "SharedFiles", "{ABF65780-EC81-4EB2-ACBC-394BCD7D6E36}"
+	ProjectSection(SolutionItems) = preProject
+		src\SharedFiles\SharedAppSettings.json = src\SharedFiles\SharedAppSettings.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,6 +216,7 @@ Global
 		{FF17B805-731F-4BF0-8CF5-F94A165DF6A5} = {272AC455-512F-4C5C-8F5E-0C5660281256}
 		{6E7E4A70-6089-426E-8407-9DBFBA7F5684} = {2BD47C96-4E55-4850-89D2-DB22F6146B1E}
 		{9C6A0371-A218-4055-B90D-EAD9443BD3BD} = {6E7E4A70-6089-426E-8407-9DBFBA7F5684}
+		{ABF65780-EC81-4EB2-ACBC-394BCD7D6E36} = {378E088C-9917-4EA9-B87F-940631AD73AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {560EC443-C067-455F-89B0-46B971F3DFC5}
