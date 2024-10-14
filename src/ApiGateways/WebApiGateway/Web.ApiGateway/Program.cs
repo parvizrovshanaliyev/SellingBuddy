@@ -18,41 +18,55 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         
-        // Specify the folder containing Ocelot routes configuration
-        var routes = builder.Configuration.GetSection("OcelotConfig:Directory").Get<string>();
+        // Configure Kestrel and Content Root
+        builder.Host.UseContentRoot(Directory.GetCurrentDirectory());
+        
+        var ocelotConfigPath= string.Empty;
+        // // Specify the folder containing Ocelot routes configuration
+        var ocelotConfigDirectory = builder.Configuration.GetSection("OcelotConfig:DirectoryLocal").Get<string>();
+        
+        // Configure app configuration to load multiple Ocelot JSON files
+        builder.Host.ConfigureAppConfiguration((context, config) =>
+        {
+            Console.WriteLine($"Environment: {context.HostingEnvironment.EnvironmentName}");
+            Console.WriteLine($"Content Root: {context.HostingEnvironment.ContentRootPath}");
+            
+            config
+                .SetBasePath(context.HostingEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                
+            ocelotConfigPath = Path.Combine(context.HostingEnvironment.ContentRootPath, ocelotConfigDirectory);
 
-        Console.WriteLine($"Ocelot routes configuration from SharedAppSettings: {routes}");
+            // Dynamically load all JSON files in OcelotConfig folder
+            var jsonFiles = Directory.GetFiles(ocelotConfigPath, "*.json", SearchOption.AllDirectories);
 
+            // Add each found JSON file to the Ocelot configuration
+            foreach (var jsonFile in jsonFiles)
+            {
+                config.AddJsonFile(jsonFile, optional: false, reloadOnChange: true);
+            }    
+                
+            config.AddEnvironmentVariables();
+        });
+        
+        // Configure logging
+        builder.Logging.AddConsole();
+        
         // Configure Ocelot with Swagger support
         builder.Configuration.AddOcelotWithSwaggerSupport(options =>
         {
-            options.Folder = routes;
+            options.Folder = ocelotConfigPath;
         });
 
-        // Add Ocelot services and Polly for resilience
-        builder.Services.AddOcelot(builder.Configuration).AddPolly().AddConsul();
-
-
-        builder.Host.ConfigureAppConfiguration(config =>
-        {
-            config.AddJsonFile($"ocelot.json", optional: true, reloadOnChange: true);
-            config.AddJsonFile($"ocelot.Docker.json", optional: true, reloadOnChange: true);
-
-            config.AddEnvironmentVariables();
-        });
-
-        // Add health checks
-        //builder.Services.ConfigureHealthChecks(builder.Configuration);
-
-        //builder.Services.AddAuthWithJwtTokenService(builder.Configuration);
+        // Add Ocelot services, Consul, and Polly for resilience
+        builder.Services.AddOcelot(builder.Configuration)
+            .AddConsul()
+            .AddPolly();
 
         // Add Swagger for Ocelot
         builder.Services.AddSwaggerForOcelot(builder.Configuration);
-
-        builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
-            .AddOcelot(routes, builder.Environment)
-            .AddEnvironmentVariables();
-
+        
         // Add Controllers
         builder.Services.AddControllers();
 

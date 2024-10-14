@@ -1,6 +1,7 @@
 {
   "Routes": [
     {
+      "UseServiceDiscovery": true,
       "ServiceName": "catalog-service",
       "DownstreamPathTemplate": "/api/catalog/{everything}",
       "DownstreamScheme": "http",

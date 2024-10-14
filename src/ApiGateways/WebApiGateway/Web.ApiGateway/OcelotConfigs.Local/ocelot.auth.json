@@ -1,6 +1,7 @@
 {
   "Routes": [
     {
+      "UseServiceDiscovery": true,
       "ServiceName": "auth-service",
       "DownstreamPathTemplate": "/api/auth/{everything}",
       "DownstreamScheme": "http",

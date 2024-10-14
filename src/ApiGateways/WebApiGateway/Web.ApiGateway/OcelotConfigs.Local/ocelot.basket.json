@@ -1,6 +1,7 @@
 {
   "Routes": [
     {
+      "UseServiceDiscovery": true,
       "ServiceName": "basket-service",
       "DownstreamPathTemplate": "/api/basket/{everything}",
       "DownstreamScheme": "http",

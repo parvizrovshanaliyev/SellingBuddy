@@ -15,21 +15,11 @@
         <PackageReference Include="Ocelot" Version="18.0.0"/>
         <PackageReference Include="Ocelot.Provider.Polly" Version="18.0.0"/>
         <PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-        <Content Update="OcelotConfigs.Local\ocelot.auth.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
+        <PackageReference Include="Polly" Version="7.2.4"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="ocelot.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+      <ProjectReference Include="..\..\..\Services\Shared\Api.Shared\Api.Shared.csproj" />
     </ItemGroup>
 
 </Project>
