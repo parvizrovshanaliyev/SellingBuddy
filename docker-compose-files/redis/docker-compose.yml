@@ -1,9 +1,9 @@
-version: '3'
+version: '3.4'
 services:
-  redis:
-    image: redis:latest
+  s_redis:
+    container_name: c_redis
+    image: redis
     ports:
-      - 6379:6379
+      - "6379:6379"
     volumes:
-      - ./data:/data
-    command: redis-server --appendonly yes
+      - /opt/app_data/redis/:/data
