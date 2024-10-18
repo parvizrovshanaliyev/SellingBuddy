@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using RabbitMQ.Client;
 
 namespace EventBus.Base;
 
@@ -16,11 +17,8 @@ public class EventBusConfig
     public bool DeleteEventPrefix => !string.IsNullOrEmpty(EventNamePrefix);
     public bool DeleteEventSuffix => !string.IsNullOrEmpty(EventNameSuffix);
 
-    public static EventBusConfig GetRabbitMQConfig(string subscriberClientAppName, IConfiguration configuration = null)
+    public static EventBusConfig GetRabbitMQConfig(string subscriberClientAppName, IConfiguration configuration)
     {
-        var eventBusConnectionString = configuration?.GetConnectionString("EventBusConnection") ?? 
-                                       "amqps://wtjzmmla:1GNs9JSK1kfinUeiyyahyyay3URIUxaS@toad.rmq.cloudamqp.com/wtjzmmla";
-
         return new EventBusConfig
         {
             ConnectionRetryCount = 5,
@@ -28,14 +26,14 @@ public class EventBusConfig
             DefaultTopicName = "SellingBuddyTopicName",
             EventBusType = EventBusType.RabbitMQ,
             EventNameSuffix = "IntegrationEvent",
-            EventBusConnectionString = eventBusConnectionString
-            //Connection = new ConnectionFactory ()
-            //{
-            // HostName = "localhost",
-            // Port = 15672,
-            // //11 UserName = "guest",
-            // Password = "guest"
-            //}
+            //EventBusConnectionString = eventBusConnectionString
+            Connection = new ConnectionFactory()
+            {
+                HostName = configuration?["RabbitMQConfig:HostName"] ?? "localhost",
+                Port = int.Parse(configuration?["RabbitMQConfig:Port"] ?? "5672"),
+                UserName = configuration?["RabbitMQConfig:UserName"] ?? "guest",
+                Password = configuration?["RabbitMQConfig:Password"] ?? "guest"
+            }
         };
     }
 }

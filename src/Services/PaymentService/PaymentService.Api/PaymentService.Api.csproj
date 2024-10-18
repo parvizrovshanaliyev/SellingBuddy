@@ -17,4 +17,8 @@
         <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Factory\EventBus.Factory.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="..\..\..\SharedFiles\SharedAppSettings.json" Link="SharedAppSettings.json" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
 </Project>

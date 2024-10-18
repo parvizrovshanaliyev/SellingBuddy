@@ -47,7 +47,7 @@ public class Program
         
         builder.Services.AddSingleton(sp =>
             EventBusFactory.Create(
-                EventBusConfig.GetRabbitMQConfig(Assembly.GetExecutingAssembly().GetName().Name),
+                EventBusConfig.GetRabbitMQConfig(Assembly.GetExecutingAssembly().GetName().Name,builder.Configuration),
                 sp));
 
         builder.Services.AddHttpContextAccessor();

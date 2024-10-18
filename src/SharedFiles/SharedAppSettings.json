@@ -10,5 +10,16 @@
     "UseDistributedCache": true,
     "PreferRedis": true,
     "RedisURL": "localhost:6379"
+  },
+  "RabbitMQConfig": {
+    "HostName": "localhost",
+    "Port": 5672,
+    "Username": "guest",
+    "Password": "guest",
+    "VirtualHost": "/",
+    "ExchangeName": "MyExchange",
+    "QueueName": "MyQueue",
+    "RoutingKey": "MyRoutingKey",
+    "PrefetchCount": 10
   }
 }

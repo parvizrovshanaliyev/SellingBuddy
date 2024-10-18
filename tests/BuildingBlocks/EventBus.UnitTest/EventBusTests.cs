@@ -57,7 +57,7 @@ public class EventBusTests
     [TestMethod]
     public void send_order_started_message_to_rabbitmq_test()
     {
-        _services.AddSingleton(sp => EventBusFactory.Create(EventBusConfig.GetRabbitMQConfig("PaymentService.Api"), sp));
+        _services.AddSingleton(sp => EventBusFactory.Create(EventBusConfig.GetRabbitMQConfig("PaymentService.Api",null), sp));
 
         var sp = _services.BuildServiceProvider();
 

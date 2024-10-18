@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using IdentityService.Api.Application.Models;
+﻿using IdentityService.Api.Application.Models;
 
 namespace IdentityService.Api.Application.Services;
 

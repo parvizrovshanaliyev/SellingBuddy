@@ -4,6 +4,7 @@ using System.Reflection;
 using EventBus.Base;
 using EventBus.Factory;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,17 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         {
+            
+            builder.Configuration
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true,
+                    reloadOnChange: true)
+                .AddJsonFile("SharedAppSettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"SharedAppSettings.{builder.Environment.EnvironmentName}.json", optional: true,
+                    reloadOnChange: true)
+                .AddEnvironmentVariables();
+            
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddLogging(configure =>
@@ -55,7 +67,7 @@ public class Program
         
             builder.Services.AddSingleton(sp =>
                 EventBusFactory.Create(
-                    EventBusConfig.GetRabbitMQConfig(Assembly.GetExecutingAssembly().GetName().Name),
+                    EventBusConfig.GetRabbitMQConfig(Assembly.GetExecutingAssembly().GetName().Name, builder.Configuration),
                     sp));
         }
         
