@@ -17,11 +17,15 @@ public static class ConfigureServices
     
     public static IServiceCollection AddAuthService(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<JwtConfig>(configuration.GetSection(nameof(JwtConfig)));
+        
         var jwtConfig = new JwtConfig();
     
         configuration.GetSection(nameof(JwtConfig)).Bind(jwtConfig);
         
-        var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfig.Secret));
+        var jwtConfigSecret = jwtConfig.Secret;
+        
+        var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtConfigSecret));
         
         services.AddJwtConfiguration(configuration);
         

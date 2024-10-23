@@ -4,12 +4,12 @@ using EventBus.Base.Abstraction;
 
 namespace BasketService.Api.IntegrationEvents.EventHandlers;
 
-public class OrderCreatedIntegrationEventHandlers : IIntegrationEventHandler<OrderCreatedIntegrationEvent>
+public class OrderCreatedIntegrationEventHandler : IIntegrationEventHandler<OrderCreatedIntegrationEvent>
 {
     private readonly IBasketRepository _basketRepository;
     private readonly ILogger<OrderCreatedIntegrationEvent> _logger;
 
-    public OrderCreatedIntegrationEventHandlers(IBasketRepository basketRepository, ILogger<OrderCreatedIntegrationEvent> logger)
+    public OrderCreatedIntegrationEventHandler(IBasketRepository basketRepository, ILogger<OrderCreatedIntegrationEvent> logger)
     {
         _basketRepository = basketRepository;
         _logger = logger;

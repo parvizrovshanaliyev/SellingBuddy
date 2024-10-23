@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NotificationService.IntegrationEvents.Order;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using Api.Shared.Configuration;
 
 namespace NotificationService
 {
@@ -40,13 +41,9 @@ namespace NotificationService
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) // Load default settings
-                .AddJsonFile("SharedAppSettings.json", optional: false, reloadOnChange: true) // Load default settings
-                .AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true) // Load environment-specific settings
-                .AddJsonFile($"SharedAppSettings.{environment}.json", optional: true, reloadOnChange: true) // Load environment-specific settings
-                .AddEnvironmentVariables(); // Add environment variables
+            var builder = new ConfigurationBuilder();
+            
+            builder.AddSharedConfiguration(Directory.GetCurrentDirectory(), environment);
 
             return builder.Build();
         }

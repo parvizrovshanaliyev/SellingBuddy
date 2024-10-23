@@ -19,9 +19,14 @@ public class JwtTokenProvider : IJwtTokenProvider
 
     public JwtTokenProvider(IOptions<JwtConfig> jwtConfig)
     {
-        _secretKey = jwtConfig.Value.Secret;
-        _issuer = jwtConfig.Value.Issuer;
-        _audience = jwtConfig.Value.Audience;
+        if (jwtConfig == null)
+        {
+            throw new ArgumentNullException(nameof(jwtConfig));
+        }
+
+        _secretKey = jwtConfig.Value.Secret ?? throw new ArgumentNullException(nameof(jwtConfig.Value.Secret));
+        _issuer = jwtConfig.Value.Issuer ?? throw new ArgumentNullException(nameof(jwtConfig.Value.Issuer));
+        _audience = jwtConfig.Value.Audience ?? throw new ArgumentNullException(nameof(jwtConfig.Value.Audience));
     }
 
     public string GenerateToken(string username, string role)

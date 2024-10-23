@@ -34,19 +34,40 @@ public class EventBusRabbitMQ : BaseEventBus
     {
         IConnectionFactory connectionFactory;
 
-        if (config.Connection != null)
+        try
         {
-            var connJson = JsonSerializer.Serialize(config.Connection, new JsonSerializerOptions
+            // if (config.Connection != null)
+            // {
+            //     var connJson = JsonSerializer.Serialize(config.Connection, new JsonSerializerOptions
+            //     {
+            //         ReferenceHandler = ReferenceHandler.IgnoreCycles
+            //     });
+            //
+            //     connectionFactory = JsonSerializer.Deserialize<ConnectionFactory>(connJson);
+            // }
+            
+            if (config.Connection is ConnectionFactory factory)
             {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles
-            });
-
-            connectionFactory = JsonSerializer.Deserialize<ConnectionFactory>(connJson);
+                connectionFactory = new ConnectionFactory
+                {
+                    HostName = factory.HostName,
+                    Port = factory.Port,
+                    UserName = factory.UserName,
+                    Password = factory.Password,
+                    VirtualHost = factory.VirtualHost,
+                    
+                };
+            }
+            else
+            {
+                connectionFactory = new ConnectionFactory();
+                connectionFactory.Uri = new Uri(config.EventBusConnectionString);
+            }
         }
-        else
+        catch (Exception e)
         {
-            connectionFactory = new ConnectionFactory();
-            connectionFactory.Uri = new Uri(config.EventBusConnectionString);
+            Console.WriteLine(e);
+            throw;
         }
 
         _persistentConnection = new RabbitMQPersistentConnection(

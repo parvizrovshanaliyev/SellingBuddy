@@ -17,7 +17,7 @@ public class NewtonSoftService : ISerializerService
 {
     public T Deserialize<T>(string text)
     {
-        return JsonConvert.DeserializeObject<T>(text);
+        return JsonConvert.DeserializeObject<T>(text) ?? throw new ArgumentNullException(nameof(text));
     }
 
     public string Serialize<T>(T obj)

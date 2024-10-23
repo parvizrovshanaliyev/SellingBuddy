@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Factory\EventBus.Factory.csproj" />
+      <ProjectReference Include="..\..\Shared\Api.Shared\Api.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
