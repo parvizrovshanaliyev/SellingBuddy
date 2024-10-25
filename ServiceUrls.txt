@@ -10,3 +10,113 @@ OrderService.Api                    -> localhost:5002
 BasketService.Api                   -> localhost:5003
 CatalogService.Api                  -> localhost:5004
 PaymentService.Api                  -> localhost:5005
+
+
+To check if your Redis container is running and working as expected, you can use the following commands:
+
+### 1. **List all Docker containers**
+   ```bash
+   docker ps -a
+   ```
+   This lists all running and stopped containers. Look for the Redis container name or ID to ensure it’s present.
+
+### 2. **Start the Redis container (if not running)**
+   ```bash
+   docker start <container_name_or_id>
+   ```
+   Replace `<container_name_or_id>` with the name or ID of your Redis container.
+
+### 3. **Check Redis logs**
+   To view logs from your Redis container:
+   ```bash
+   docker logs <container_name_or_id>
+   ```
+   This will show any errors or confirmation messages indicating that Redis is running.
+
+### 4. **Connect to Redis CLI inside the container**
+   You can open a command-line interface in the Redis container to check its status:
+   ```bash
+   docker exec -it <container_name_or_id> redis-cli
+   ```
+   Once inside, you can use Redis commands, such as `PING`, to test connectivity:
+   ```bash
+   PING
+   ```
+   If Redis is running, you should see a response: `PONG`.
+
+### 5. **Check container status in Docker (shorter way)**
+   For a quick status check:
+   ```bash
+   docker inspect -f '{{.State.Status}}' <container_name_or_id>
+   ```
+   It should return `running` if the container is active.
+
+These commands should help you monitor and troubleshoot your Redis container easily.
+
+To view the data stored in your Redis instance, you can use the `redis-cli` command-line tool. Here are some commands to help you explore the data:
+
+### 1. **Connect to Redis CLI**
+   First, connect to the Redis CLI. If Redis is running in a Docker container, you can access it like this:
+   ```bash
+   docker exec -it <container_name_or_id> redis-cli
+   ```
+   Replace `<container_name_or_id>` with your Redis container's name or ID.
+
+### 2. **Basic Commands to Explore Redis Data**
+
+   - **Check if there’s data**:
+     ```bash
+     DBSIZE
+     ```
+     This shows the number of keys in the currently selected database.
+
+   - **List all keys**:
+     ```bash
+     KEYS *
+     ```
+     This command retrieves all keys in the current database. Note that this can be slow if you have many keys. For production environments, `SCAN` is preferred over `KEYS` because it’s more efficient.
+
+   - **Scan keys (preferred for large data)**:
+     ```bash
+     SCAN 0
+     ```
+     `SCAN` allows you to incrementally iterate through the keys in the dataset without blocking Redis.
+
+   - **Get the value of a specific key**:
+     ```bash
+     GET <key_name>
+     ```
+     Replace `<key_name>` with the key whose value you want to see. This works if the key holds a string value.
+
+   - **Get data in hash keys**:
+     ```bash
+     HGETALL <key_name>
+     ```
+     This retrieves all fields and values stored in a hash. Replace `<key_name>` with the name of the hash key.
+
+   - **Get data in list keys**:
+     ```bash
+     LRANGE <key_name> 0 -1
+     ```
+     This retrieves all elements from a list. Replace `<key_name>` with the name of the list key.
+
+   - **Get data in set keys**:
+     ```bash
+     SMEMBERS <key_name>
+     ```
+     This retrieves all members of a set.
+
+   - **Get data in sorted set keys**:
+     ```bash
+     ZRANGE <key_name> 0 -1 WITHSCORES
+     ```
+     This retrieves all members of a sorted set, including their scores.
+
+### 3. **Exit the Redis CLI**
+   When you’re finished, type:
+   ```bash
+   exit
+   ```
+These commands should help you explore and manage your Redis data effectively!
+
+

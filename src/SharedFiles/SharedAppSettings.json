@@ -1,6 +1,6 @@
 {
   "JwtConfig": {
-    "Secret": "your-secret-key",
+    "Secret": "YourStrongSecretKey123",
     "Issuer": "your-issuer",
     "Audience": "your-audience",
     "AccessTokenExpiration": 60,

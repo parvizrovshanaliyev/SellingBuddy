@@ -29,11 +29,12 @@ public static class ConfigureServices
             var securityScheme = new OpenApiSecurityScheme
             {
                 Name = "Authorization",
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "JWT Authorization header using the Bearer scheme."
+                Description =
+                    "JWT Authorization header using the Bearer scheme.Example: \"Authorization: Bearer {token}\""
             };
 
             c.AddSecurityDefinition("Bearer", securityScheme);
@@ -41,8 +42,15 @@ public static class ConfigureServices
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
-                    securityScheme,
-                    new string[] {}
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
                 }
             });
         });

@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		docs\service-discovery.png = docs\service-discovery.png
 		ServiceUrls.txt = ServiceUrls.txt
+		docs\api-gateway-aggregator-and-services-and-event-bus.png = docs\api-gateway-aggregator-and-services-and-event-bus.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{378E088C-9917-4EA9-B87F-940631AD73AD}"
