@@ -8,6 +8,7 @@ namespace OrderService.Domain.AggregateModels.OrderAggregate;
 /// </summary>
 public class OrderItem : BaseEntity, IValidatableObject
 {
+    public int OrderId { get; private set; }
     /// <summary>
     /// Gets the product ID associated with the order item.
     /// </summary>

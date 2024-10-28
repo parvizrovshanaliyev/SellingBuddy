@@ -19,6 +19,11 @@ public class CardType : Enumeration
     /// MasterCard card type.
     /// </summary>
     public static CardType MasterCard = new CardType(3, nameof(MasterCard).ToLowerInvariant());
+    
+    /// <summary>
+    /// Capital One card type.
+    /// </summary>
+    public static CardType CapitalOne = new CardType(4, nameof(CapitalOne).ToLowerInvariant());
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CardType"/> class.

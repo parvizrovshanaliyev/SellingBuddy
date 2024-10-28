@@ -6,7 +6,8 @@
 /// Inherits from <see cref="BaseEntity"/>.
 /// </summary>
 public class PaymentMethod : BaseEntity
-{
+{ 
+    public int BuyerId { get; set; }
     /// <summary>
     /// Gets or sets an alias name for the payment method, used for identification purposes.
     /// </summary>

@@ -47,6 +47,7 @@ public class Order : BaseEntity, IAggregateRoot
         BuyerId = Guid.NewGuid();
         OrderDate = DateTime.UtcNow;
         Address = address;
+        orderStatusId = OrderStatus.Submitted.Id;
         OrderStatus = OrderStatus.Submitted;
 
         AddOrderStartedDomainEvent(
@@ -88,6 +89,7 @@ public class Order : BaseEntity, IAggregateRoot
     /// </summary>
     public Address Address { get; private set; }
 
+    private int orderStatusId;
     /// <summary>
     /// Gets the current status of the order.
     /// </summary>

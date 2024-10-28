@@ -6,28 +6,6 @@ using OrderService.Domain.Events;
 
 namespace OrderService.Application.DomainEventHandlers;
 
-public class UpdateOrderWhenBuyerAndPaymentVerifiedDomainEventHandler : INotificationHandler<BuyerAndPaymentMethodVerifiedDomainEvent>
-{
-    private readonly IOrderRepository _orderRepository;
-
-    public UpdateOrderWhenBuyerAndPaymentVerifiedDomainEventHandler(IOrderRepository orderRepository)
-    {
-        _orderRepository = orderRepository ?? throw new ArgumentNullException(nameof(orderRepository));
-    }
-
-    public async Task Handle(BuyerAndPaymentMethodVerifiedDomainEvent notification, CancellationToken cancellationToken)
-    {
-        var orderToUpdate = await _orderRepository.GetSingleAsync(
-            predicate: x => x.Id == notification.OrderId,
-            cancellationToken: cancellationToken);
-        
-        orderToUpdate.SetBuyerId(notification.Buyer.Id);
-        orderToUpdate.SetPaymentMethodId(notification.PaymentMethod.Id);
-        
-        // set methods so validate
-    }
-}
-
 public class OrderStartedDomainEventHandlers : INotificationHandler<OrderStartedDomainEvent>
 {
     private readonly IBuyerRepository _buyerRepository;
@@ -63,13 +41,11 @@ public class OrderStartedDomainEventHandlers : INotificationHandler<OrderStarted
             orderId: notification.Order.Id);
         
         var buyerUpdated = isExist ?
-            await _buyerRepository.UpdateAsync(buyer, cancellationToken) :
+            _buyerRepository.Update(buyer) :
             await _buyerRepository.AddAsync(buyer, cancellationToken);
         
         await _buyerRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         
         // order status changed event maybe be fired here
-        
-        throw new NotImplementedException();
     }
 }
