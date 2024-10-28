@@ -14,7 +14,7 @@ public class BasketItem
     /// <summary>
     /// Gets or sets the unique identifier of the product.
     /// </summary>
-    public string ProductId { get; set; }
+    public int ProductId { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the product.
