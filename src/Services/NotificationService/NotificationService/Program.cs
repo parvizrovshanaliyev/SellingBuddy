@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using NotificationService.IntegrationEvents.Order;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using Api.Shared.Configuration;
+using Api.Shared.Extensions;
 
 namespace NotificationService
 {

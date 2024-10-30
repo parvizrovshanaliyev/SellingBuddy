@@ -1,4 +1,4 @@
-﻿using Api.Shared.Configuration;
+﻿using Api.Shared.Extensions;
 using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Server.Features;

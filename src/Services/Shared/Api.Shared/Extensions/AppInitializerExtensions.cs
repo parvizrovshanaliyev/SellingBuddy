@@ -8,9 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Api.Shared.ApiServices;
+namespace Api.Shared.Extensions;
 
-public static class ConfigureServices
+public static class AppInitializerExtensions
 {
     public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration, string assemblyName)
     {
@@ -31,7 +31,6 @@ public static class ConfigureServices
         return services;
     }
     
-    // use 
     public static IApplicationBuilder UseServices(
         this IApplicationBuilder app,
         IConfiguration configuration,

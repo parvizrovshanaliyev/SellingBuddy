@@ -10,7 +10,8 @@ public static class ConfigureServices
         var assembly = Assembly.GetExecutingAssembly();
         
         services.AddAutoMapper(assembly);
-        services.AddMediatR(assembly);
+        
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         
         return services;
     }

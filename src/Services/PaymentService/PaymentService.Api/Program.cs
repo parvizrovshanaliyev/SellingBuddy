@@ -1,6 +1,5 @@
 using System.Reflection;
-using Api.Shared.ApiServices;
-using Api.Shared.Configuration;
+using Api.Shared.Extensions;
 using EventBus.Base;
 using EventBus.Factory;
 using Microsoft.AspNetCore.Builder;

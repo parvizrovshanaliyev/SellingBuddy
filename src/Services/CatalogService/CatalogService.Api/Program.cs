@@ -1,7 +1,5 @@
 using System.Reflection;
-using Api.Shared.ApiServices;
-using Api.Shared.Configuration;
-using CatalogService.Api.Extensions;
+using Api.Shared.Extensions;
 using CatalogService.Api.Infrastructure;
 using CatalogService.Api.Infrastructure.Context;
 

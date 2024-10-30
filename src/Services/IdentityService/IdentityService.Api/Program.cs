@@ -1,8 +1,7 @@
 using System.Reflection;
-using Api.Shared.ApiServices;
 using Api.Shared.Auth;
-using Api.Shared.Configuration;
 using Api.Shared.Consul;
+using Api.Shared.Extensions;
 using Api.Shared.Host;
 using IdentityService.Api.Application.Services;
 using Microsoft.OpenApi.Models;

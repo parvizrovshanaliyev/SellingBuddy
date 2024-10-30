@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
+using OrderService.Domain.SeedWork;
 using Polly;
 
 namespace OrderService.Infrastructure.Context;
@@ -25,46 +28,32 @@ public class OrderContextSeed
 
     private static async Task ProcessSeeding(OrderDbContext context, ILogger<OrderContextSeed> logger)
     {
-        await Task.CompletedTask;
-        return;
-        //await context.Database.MigrateAsync(); // Apply any pending migrations
-
-        // if (!context.CatalogBrands.Any())
-        // {
-        //     context.CatalogBrands.AddRange(
-        //         new CatalogBrand { Brand = "Brand 1" },
-        //         new CatalogBrand { Brand = "Brand 2" },
-        //         new CatalogBrand { Brand = "Brand 3" }
-        //     );
-        //     await context.SaveChangesAsync();
-        // }
-        //
-        // if (!context.CatalogTypes.Any())
-        // {
-        //     context.CatalogTypes.AddRange(
-        //         new CatalogType { Type = "Type 1" },
-        //         new CatalogType { Type = "Type 2" },
-        //         new CatalogType { Type = "Type 3" }
-        //     );
-        //     await context.SaveChangesAsync();
-        // }
-        //
-        // if (!context.CatalogItems.Any())
-        // {
-        //     context.CatalogItems.AddRange(
-        //         new CatalogItem
-        //         {
-        //             Name = "Item 1",
-        //             Description = "Description 1",
-        //             Price = 10.99m,
-        //             PictureFileName = "item1.jpg",
-        //             PictureUri = "https://example.com/item1.jpg",
-        //             CatalogTypeId = 1, // Use the appropriate type ID
-        //             CatalogBrandId = 1 // Use the appropriate brand ID
-        //         }
-        //         // Add more items as needed
-        //     );
-        //     await context.SaveChangesAsync();
-        // }
+        await using (context)
+        {
+            await context.Database.MigrateAsync(); // Apply any pending migrations
+            
+            if (!context.CardTypes.Any())
+            {
+                
+                var cardTypes = Enumeration.GetAll<CardType>();
+                
+                context.CardTypes.AddRange(
+                    cardTypes
+                );
+                
+                await context.SaveChangesAsync();
+            }
+            
+            if (!context.OrderStatuses.Any())
+            {
+                var orderStatuses = Enumeration.GetAll<OrderStatus>();
+                
+                context.OrderStatuses.AddRange(
+                    orderStatuses
+                );
+                
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

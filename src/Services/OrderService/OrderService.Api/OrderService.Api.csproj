@@ -23,4 +23,11 @@
         <Content Include="..\..\..\SharedFiles\SharedAppSettings.json" Link="SharedAppSettings.json" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+
 </Project>

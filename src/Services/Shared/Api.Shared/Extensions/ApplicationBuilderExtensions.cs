@@ -1,8 +1,10 @@
-﻿using CatalogService.Api.Infrastructure.Context;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Polly;
 
-namespace CatalogService.Api.Extensions;
+namespace Api.Shared.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
@@ -21,8 +23,7 @@ public static class ApplicationBuilderExtensions
 
         try
         {
-            logger!.LogInformation("Migrating database associated with context {DbContextName}",
-                nameof(CatalogDbContext));
+            logger!.LogInformation("Migrating database associated with context");
 
             var retryIntervals = new[]
             {
@@ -36,8 +37,7 @@ public static class ApplicationBuilderExtensions
 
             retryPolicy.Execute(() => InvokeSeeder(seeder, context, services));
 
-            logger!.LogInformation("Migrating database associated with context {DbContextName}",
-                nameof(CatalogDbContext));
+            logger!.LogInformation("Migrating database associated with context");
         }
         catch (Exception ex)
         {
@@ -50,7 +50,7 @@ public static class ApplicationBuilderExtensions
     private static void InvokeSeeder<TContext>(Action<TContext, IServiceProvider> seeder, TContext context,
         IServiceProvider services) where TContext : DbContext
     {
-        context.Database.EnsureCreated();
+        //context.Database.EnsureCreated();
         context.Database.Migrate(); // Apply migrations
 
         seeder(context, services); // Seed data

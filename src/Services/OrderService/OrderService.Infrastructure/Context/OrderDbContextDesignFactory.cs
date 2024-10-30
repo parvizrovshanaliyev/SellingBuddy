@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Api.Shared.Extensions;
 using MediatR;
 
 namespace OrderService.Infrastructure.Context;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using System.IO;
 
 public class OrderDbContextDesignFactory : IDesignTimeDbContextFactory<OrderDbContext>
 {
@@ -19,21 +19,17 @@ public class OrderDbContextDesignFactory : IDesignTimeDbContextFactory<OrderDbCo
     
     public OrderDbContext CreateDbContext(string[] args)
     {
+        var connectionString = ConfigurationExtensions.GetDbConnectionStringFromConfiguration();
+        
+        Console.WriteLine($"DesignTime DbContext: {connectionString}");
+        
         var optionsBuilder = new DbContextOptionsBuilder<OrderDbContext>()
-            .UseSqlServer(GetConnectionStringFromConfiguration());
+            .UseSqlServer(connectionString);
 
-        return new OrderDbContext(optionsBuilder.Options, null);
+        return new OrderDbContext(optionsBuilder.Options, new NoMediator());
     }
 
-    private string GetConnectionStringFromConfiguration()
-    {
-        var configuration = new ConfigurationBuilder()
-            //.SetBasePath(Directory.GetCurrentDirectory())
-            //.AddJsonFile("appsettings.json")
-            .Build();
-
-        return configuration.GetConnectionString("DefaultConnection");
-    }
+   
 }
 
 class NoMediator : IMediator

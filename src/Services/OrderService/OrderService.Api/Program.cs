@@ -1,6 +1,5 @@
 using System.Reflection;
-using Api.Shared.ApiServices;
-using Api.Shared.Configuration;
+using Api.Shared.Extensions;
 using Microsoft.AspNetCore.Builder;
 
 namespace OrderService.Api;
