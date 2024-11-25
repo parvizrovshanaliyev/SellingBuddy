@@ -1,0 +1,56 @@
+﻿@page "/Login"
+@using WebApp.Application.Services.Identity
+@using WebApp.Domain.User
+@using System.Web
+
+<div class="container-fluid h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col col-sm-6 col-md-4 col-lg-4 col-xl-3">
+            <EditForm Model="@userLoginRequest" OnValidSubmit="ProcessLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input id="username" @bind-value="userLoginRequest.Username" class="form-control form-control-lg" type="text" placeholder="Enter your username" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input id="password" @bind-value="userLoginRequest.Password" class="form-control form-control-lg" type="password" placeholder="Enter your password" />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-info btn-block">Login</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Inject]
+    private IIdentityService IdentityService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private UserLoginRequest userLoginRequest = new UserLoginRequest("", "");
+
+    private async Task ProcessLogin()
+    {
+        bool isAuthenticated = await IdentityService.Login(userLoginRequest.Username, userLoginRequest.Password);
+
+        if (isAuthenticated)
+        {
+            // Retrieve the return URL or default to the home page
+            string returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)?["returnUrl"] ?? "/";
+            NavigationManager.NavigateTo(returnUrl);
+        }
+        else
+        {
+            // Handle login failure (optional: display an error message)
+            // Add toast notification or feedback logic if needed
+        }
+    }
+}

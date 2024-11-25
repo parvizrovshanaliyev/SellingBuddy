@@ -10,10 +10,14 @@ public static class HttpClientExtension
         TValue value)
     {
         var httpResponse = await httpClient.PostAsJsonAsync(url, value);
+        
+        if(httpResponse.IsSuccessStatusCode)
+        {
+            var response = await httpResponse.Content.ReadFromJsonAsync<TResult>();
+            return  response;
+        }
 
-        return httpResponse.IsSuccessStatusCode
-            ? await httpResponse.Content.ReadFromJsonAsync<TResult>()
-            : default;
+        return  default;
     }
     
     public static async Task PostAsync<TValue>(this HttpClient httpClient, string url, TValue value)

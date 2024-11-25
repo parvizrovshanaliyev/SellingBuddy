@@ -1,0 +1,26 @@
+﻿@page "/logout"
+
+@using System.Web
+@using WebApp.Application.Services.Identity
+
+@code {
+    [Inject]
+    private IIdentityService IdentityService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+    // Perform logout
+        IdentityService.Logout();
+
+    // Parse returnUrl from the query string or default to home page
+        string returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)?["returnUrl"] ?? "/";
+
+    // Navigate to the appropriate page
+        NavigationManager.NavigateTo(returnUrl, forceLoad: true);
+
+        base.OnInitialized();
+    }
+}

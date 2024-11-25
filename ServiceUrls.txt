@@ -5,11 +5,16 @@ NotificationService                 -> Console App
 
 Web.ApiGateway                      -> localhost:5000
 
+Services
+
 IdentityService.Api                 -> localhost:5001
 OrderService.Api                    -> localhost:5002
 BasketService.Api                   -> localhost:5003
 CatalogService.Api                  -> localhost:5004
 PaymentService.Api                  -> localhost:5005
+
+Clients 
+WebApp                              -> localhost:5006
 
 
 To check if your Redis container is running and working as expected, you can use the following commands:

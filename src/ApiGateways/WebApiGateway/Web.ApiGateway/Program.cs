@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Api.Shared.Cors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -75,6 +76,8 @@ public class Program
 
         // Add SwaggerGen to generate Swagger UI for the API Gateway itself
         builder.Services.AddSwaggerGen();
+        
+        builder.Services.AddCors(builder.Configuration);
 
         var app = builder.Build();
 
@@ -90,6 +93,7 @@ public class Program
 
         // Enable routing and authorization
         app.UseRouting();
+        app.UseCorsPolicy();
 
         app.UseAuthorization();
 

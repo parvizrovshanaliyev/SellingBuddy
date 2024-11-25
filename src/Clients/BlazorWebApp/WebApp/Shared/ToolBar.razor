@@ -1,0 +1,49 @@
+﻿@page "/ToolBar"
+@using WebApp.Application.Services.Identity
+
+<div class="toolbar">
+    @if (isAuthenticated)
+    {
+        <a href="basket" class="toolbar-link">@IdentityService.GetUserName() - Basket (@basketItemCount)</a>
+        <a class="toolbar-link" @onclick="HandleLogout">Logout</a>
+    }
+    else
+    {
+        <a class="toolbar-link" @onclick="HandleLogin">Login</a>
+    }
+</div>
+
+@code {
+
+    [Inject]
+    private IIdentityService IdentityService { get; set; } = default!;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private bool isAuthenticated;
+    private int basketItemCount;
+
+    protected override void OnInitialized()
+    {
+    // Initialize authentication status and other data
+        isAuthenticated = IdentityService.IsAuthenticated;
+        basketItemCount = 0; // Placeholder: Replace with actual logic to fetch basket count
+    }
+
+    private void HandleLogin()
+    {
+        NavigateTo("login");
+    }
+
+    private void HandleLogout()
+    {
+        NavigateTo("logout");
+    }
+
+    private void NavigateTo(string page)
+    {
+        var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
+        NavigationManager.NavigateTo($"{page}?returnUrl={returnUrl}", forceLoad: true);
+    }
+}

@@ -5,6 +5,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using WebApp.Application.Services.Identity;
 using WebApp.Utils;
 
 namespace WebApp;
@@ -21,6 +22,8 @@ public class Program
         builder.Services.AddBlazoredLocalStorage();
         
         builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+        
+        builder.Services.AddScoped<IIdentityService , IdentityService>();
         
         builder.Services.AddScoped(serviceProvider =>
         {
