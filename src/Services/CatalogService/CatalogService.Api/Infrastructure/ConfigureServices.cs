@@ -6,7 +6,7 @@ namespace CatalogService.Api.Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddPersistent(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 

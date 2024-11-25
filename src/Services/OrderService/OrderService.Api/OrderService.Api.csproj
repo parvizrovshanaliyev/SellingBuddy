@@ -12,11 +12,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Base\EventBus.Base.csproj" />
+      <ProjectReference Include="..\..\..\BuildingBlocks\EventBus\EventBus.Factory\EventBus.Factory.csproj" />
       <ProjectReference Include="..\..\Shared\Api.Shared\Api.Shared.csproj" />
+      <ProjectReference Include="..\OrderService.Application\OrderService.Application.csproj" />
+      <ProjectReference Include="..\OrderService.Domain\OrderService.Domain.csproj" />
+      <ProjectReference Include="..\OrderService.Infrastructure\OrderService.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,8 +1,10 @@
 using System.Reflection;
 using Api.Shared.Caching;
 using Api.Shared.Extensions;
+using BasketService.Api.Core.Infrastructure;
 using BasketService.Api.Core.Infrastructure.Repository;
 using BasketService.Api.Core.Infrastructure.Services;
+using BasketService.Api.IntegrationEvents;
 using BasketService.Api.IntegrationEvents.EventHandlers;
 using BasketService.Api.IntegrationEvents.Events;
 using EventBus.Base;
@@ -23,20 +25,9 @@ public class Program
         
         builder.Services.AddServices(builder.Configuration, Assembly.GetExecutingAssembly().GetName().Name);
 
-        builder.Services.AddCaching(builder.Configuration);
+        builder.Services.AddInfrastructure(builder.Configuration);
         
-        builder.Services.AddTransient<IIdentityService, IdentityService>();
-        
-        builder.Services.AddScoped<IBasketRepository , BasketRepository>();
-        
-        builder.Services.AddSingleton(sp =>
-            EventBusFactory.Create(
-                EventBusConfig.GetRabbitMQConfig(Assembly.GetExecutingAssembly().GetName().Name,builder.Configuration),
-                sp));
-        
-        var eventBus = builder.Services.BuildServiceProvider().GetService<IEventBus>();
-        
-        eventBus.Subscribe<OrderCreatedIntegrationEvent, OrderCreatedIntegrationEventHandler>();
+        builder.Services.AddIntegrationEvents(Assembly.GetExecutingAssembly().GetName().Name, builder.Configuration);
 
         var app = builder.Build();
 

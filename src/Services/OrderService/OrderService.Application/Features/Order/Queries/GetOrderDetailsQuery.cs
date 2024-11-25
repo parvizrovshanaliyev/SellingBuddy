@@ -4,28 +4,28 @@ using OrderService.Application.Interfaces.Repositories;
 
 namespace OrderService.Application.Features.Order.Queries;
 
-public class GetOrderDetailQuery : IRequest<OrderDetailResponse>
+public class GetOrderDetailsQuery : IRequest<OrderDetailResponse>
 {
     public Guid OrderId { get; set; }
     
-    public GetOrderDetailQuery(Guid orderId)
+    public GetOrderDetailsQuery(Guid orderId)
     {
         OrderId = orderId;
     }
 }
 
-public class GetOrderDetailQueryHandler : IRequestHandler<GetOrderDetailQuery, OrderDetailResponse>
+public class GetOrderDetailsQueryHandler : IRequestHandler<GetOrderDetailsQuery, OrderDetailResponse>
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IMapper _mapper;
 
-    public GetOrderDetailQueryHandler(IOrderRepository orderRepository, IMapper mapper)
+    public GetOrderDetailsQueryHandler(IOrderRepository orderRepository, IMapper mapper)
     {
         _orderRepository = orderRepository;
         _mapper = mapper;
     }
 
-    public async Task<OrderDetailResponse> Handle(GetOrderDetailQuery request, CancellationToken cancellationToken)
+    public async Task<OrderDetailResponse> Handle(GetOrderDetailsQuery request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetByIdAsync(request.OrderId, cancellationToken, x => x.OrderItems);
         

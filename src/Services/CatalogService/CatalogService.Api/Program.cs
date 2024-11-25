@@ -15,7 +15,7 @@ public class Program
 
         builder.Services.AddServices(builder.Configuration, Assembly.GetExecutingAssembly().GetName().Name);
 
-        builder.Services.AddPersistent(builder.Configuration);
+        builder.Services.AddPersistence(builder.Configuration);
         
         builder.Services.Configure<CatalogSettings>(builder.Configuration.GetSection("CatalogSettings"));
 
