@@ -1,14 +1,6 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Reflection;
-using Api.Shared.Auth;
 using Api.Shared.Caching;
-using Api.Shared.Consul;
 using Api.Shared.Extensions;
-using Api.Shared.Host;
-using Api.Shared.Swagger;
 using BasketService.Api.Core.Infrastructure.Repository;
 using BasketService.Api.Core.Infrastructure.Services;
 using BasketService.Api.IntegrationEvents.EventHandlers;
@@ -17,11 +9,7 @@ using EventBus.Base;
 using EventBus.Base.Abstraction;
 using EventBus.Factory;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace BasketService.Api;
 

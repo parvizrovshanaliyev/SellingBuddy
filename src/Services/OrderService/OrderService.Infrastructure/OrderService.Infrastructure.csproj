@@ -4,19 +4,34 @@
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
     
+<!--    <ItemGroup>-->
+<!--        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21"/>-->
+<!--        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.21">-->
+<!--            <PrivateAssets>all</PrivateAssets>-->
+<!--            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
+<!--        </PackageReference>-->
+<!--        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.21" />-->
+<!--        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21"/>-->
+<!--        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21">-->
+<!--            <PrivateAssets>all</PrivateAssets>-->
+<!--            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
+<!--        </PackageReference>-->
+<!--        <PackageReference Include="Polly" Version="7.2.4"/>-->
+<!--    </ItemGroup>-->
+
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.21">
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.21" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.21"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.21">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Polly" Version="7.2.4"/>
+        <PackageReference Include="Polly" />
     </ItemGroup>
     
     <ItemGroup>

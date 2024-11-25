@@ -8,11 +8,18 @@
         <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
+<!--    <ItemGroup>-->
+<!--        <PackageReference Include="Consul" Version="1.7.14.4" />-->
+<!--        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />-->
+<!--        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />-->
+<!--        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>-->
+<!--    </ItemGroup>-->
+
     <ItemGroup>
-        <PackageReference Include="Consul" Version="1.7.14.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+        <PackageReference Include="Consul" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Features" />
+        <PackageReference Include="Swashbuckle.AspNetCore" />
     </ItemGroup>
 
     <ItemGroup>
