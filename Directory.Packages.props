@@ -2,10 +2,10 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-
   <!-- Shared Package Versions -->
   <ItemGroup>
     <PackageVersion Include="Consul" Version="1.7.14.4" />
+    <PackageVersion Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageVersion Include="Polly" Version="7.2.4" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
@@ -29,13 +29,11 @@
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
   </ItemGroup>
-
   <!-- Project-Specific and Other Package Versions -->
   <!-- Payment Service -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
   </ItemGroup>
-
   <!-- Gateway -->
   <ItemGroup>
     <PackageVersion Include="MMLib.SwaggerForOcelot" Version="6.2.0" />
@@ -43,62 +41,53 @@
     <PackageVersion Include="Ocelot.Provider.Polly" Version="18.0.0" />
     <PackageVersion Include="Ocelot.Provider.Consul" Version="18.0.0" />
   </ItemGroup>
-
   <!-- Azure Service -->
   <ItemGroup>
     <PackageVersion Include="Azure.Messaging.ServiceBus" Version="7.16.1" />
     <PackageVersion Include="Microsoft.Azure.ServiceBus" Version="5.2.0" />
   </ItemGroup>
-
   <!-- Event Bus Base -->
   <ItemGroup>
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageVersion Include="RabbitMQ.Client" Version="6.5.0" />
   </ItemGroup>
-
   <!-- RabbitMQ -->
   <ItemGroup>
     <PackageVersion Include="RabbitMQ.Client" Version="6.5.0" />
   </ItemGroup>
-
   <!-- Blazor -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.21" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.21" />
     <PackageVersion Include="System.Net.Http.Json" Version="7.0.1" />
+    <PackageVersion Include="Blazored.LocalStorage" Version="4.0.0" />
+    <!--    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />-->
   </ItemGroup>
-
   <!-- Basket -->
   <ItemGroup>
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
-
   <!-- Catalog -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
   </ItemGroup>
-
   <!-- Identity -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.AspNetCore.Http.Features" Version="6.0.0-preview.4.21253.5" />
   </ItemGroup>
-
   <!-- Notification Service -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
   </ItemGroup>
-
   <!-- Order Application -->
   <ItemGroup>
     <PackageVersion Include="AutoMapper" Version="13.0.1" />
     <PackageVersion Include="MediatR" Version="12.4.1" />
   </ItemGroup>
-
   <!-- Order Infrastructure -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
   </ItemGroup>
-
   <!-- Test -->
   <ItemGroup>
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
@@ -106,5 +95,4 @@
     <PackageVersion Include="MSTest.TestFramework" Version="3.1.1" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
   </ItemGroup>
-
 </Project>
