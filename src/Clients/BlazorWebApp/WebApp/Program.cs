@@ -15,25 +15,37 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+        // Root component
         builder.RootComponents.Add<App>("#app");
 
+        // Default HttpClient setup (used for base address defined by the app environment)
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+        // Add Blazored Local Storage
         builder.Services.AddBlazoredLocalStorage();
-        
+
+        // Authentication and Identity services
         builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-        
-        builder.Services.AddScoped<IIdentityService , IdentityService>();
-        
+        builder.Services.AddScoped<IIdentityService, IdentityService>();
+
+        // Register the default ApiGatewayHttpClient with a proper base address
+        builder.Services.AddHttpClient("ApiGatewayHttpClient", client =>
+        {
+            // Consider using environment-specific URLs (dev, prod)
+            var apiBaseAddress = builder.HostEnvironment.IsDevelopment() 
+                ? "http://localhost:5000/"  // Local development URL
+                : "https://your-production-url.com/";  // Production URL
+            
+            client.BaseAddress = new Uri(apiBaseAddress);
+        });
+
+        // HttpClient factory for dependency injection
         builder.Services.AddScoped(serviceProvider =>
         {
             var httpClientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
-            
             return httpClientFactory.CreateClient("ApiGatewayHttpClient");
         });
-
-        builder.Services.AddHttpClient("ApiGatewayHttpClient",
-            client => client.BaseAddress = new Uri("http://localhost:5000/"));
 
         await builder.Build().RunAsync();
     }

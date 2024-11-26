@@ -12,17 +12,24 @@
 
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input id="username" @bind-value="userLoginRequest.Username" class="form-control form-control-lg" type="text" placeholder="Enter your username" />
+                    <input id="username" @bind-value="userLoginRequest.Username" class="form-control form-control-lg" type="text" placeholder="Enter your username" required />
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input id="password" @bind-value="userLoginRequest.Password" class="form-control form-control-lg" type="password" placeholder="Enter your password" />
+                    <input id="password" @bind-value="userLoginRequest.Password" class="form-control form-control-lg" type="password" placeholder="Enter your password" required />
                 </div>
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-info btn-block">Login</button>
                 </div>
+
+                @if (!string.IsNullOrEmpty(loginErrorMessage))
+                {
+                    <div class="alert alert-danger mt-3" role="alert">
+                        @loginErrorMessage
+                    </div>
+                }
             </EditForm>
         </div>
     </div>
@@ -36,21 +43,33 @@
     private NavigationManager NavigationManager { get; set; } = default!;
 
     private UserLoginRequest userLoginRequest = new UserLoginRequest("", "");
+    private string loginErrorMessage = string.Empty;
 
+    /// <summary>
+    /// Processes the login request and handles navigation on success or failure.
+    /// </summary>
     private async Task ProcessLogin()
     {
-        bool isAuthenticated = await IdentityService.Login(userLoginRequest.Username, userLoginRequest.Password);
+        try
+        {
+            bool isAuthenticated = await IdentityService.Login(userLoginRequest.Username, userLoginRequest.Password);
 
-        if (isAuthenticated)
-        {
-            // Retrieve the return URL or default to the home page
-            string returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)?["returnUrl"] ?? "/";
-            NavigationManager.NavigateTo(returnUrl);
+            if (isAuthenticated)
+            {
+                // Retrieve the return URL or default to the home page
+                string returnUrl = HttpUtility.ParseQueryString(new Uri(NavigationManager.Uri).Query)?["returnUrl"] ?? "/";
+                NavigationManager.NavigateTo(returnUrl);
+            }
+            else
+            {
+                // Set error message if authentication fails
+                loginErrorMessage = "Invalid username or password. Please try again.";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Handle login failure (optional: display an error message)
-            // Add toast notification or feedback logic if needed
+            // Handle any unexpected errors
+            loginErrorMessage = $"An error occurred: {ex.Message}. Please try again later.";
         }
     }
 }

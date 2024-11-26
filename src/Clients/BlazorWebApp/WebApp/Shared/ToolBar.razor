@@ -1,5 +1,4 @@
-﻿@page "/ToolBar"
-@using WebApp.Application.Services.Identity
+﻿@using WebApp.Application.Services.Identity
 
 <div class="toolbar">
     @if (isAuthenticated)
@@ -14,7 +13,6 @@
 </div>
 
 @code {
-
     [Inject]
     private IIdentityService IdentityService { get; set; } = default!;
 
@@ -24,26 +22,51 @@
     private bool isAuthenticated;
     private int basketItemCount;
 
+    /// <summary>
+    /// Initialize authentication status and other necessary data.
+    /// </summary>
     protected override void OnInitialized()
     {
-    // Initialize authentication status and other data
+        // Initialize authentication status and other data
         isAuthenticated = IdentityService.IsAuthenticated;
-        basketItemCount = 0; // Placeholder: Replace with actual logic to fetch basket count
+        basketItemCount = GetBasketItemCount(); // Placeholder: Replace with actual logic to fetch basket count
     }
 
+    /// <summary>
+    /// Navigate to the login page.
+    /// </summary>
     private void HandleLogin()
     {
         NavigateTo("login");
     }
 
-    private void HandleLogout()
+    /// <summary>
+    /// Logout the user and navigate to the login page.
+    /// </summary>
+    private async void HandleLogout()
     {
-        NavigateTo("logout");
+        IdentityService.Logout();
+        isAuthenticated = false; // Update UI after logout
+        StateHasChanged(); // Force a re-render to reflect the changes
+        NavigateTo("login");
     }
 
+    /// <summary>
+    /// Navigate to a specified page, with an optional return URL.
+    /// </summary>
     private void NavigateTo(string page)
     {
         var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
         NavigationManager.NavigateTo($"{page}?returnUrl={returnUrl}", forceLoad: true);
+    }
+
+    /// <summary>
+    /// Placeholder method to simulate fetching the basket item count.
+    /// </summary>
+    /// <returns>The number of items in the basket.</returns>
+    private int GetBasketItemCount()
+    {
+        // Replace with actual logic to fetch basket item count (e.g., from a service or local storage)
+        return 3; // Example item count
     }
 }
