@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
-namespace Api.Shared.Swagger;
-public static class ConfigureServices
+namespace Microsoft.Extensions.DependencyInjection;
+public static partial class ConfigureServices
 {
     public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services, IConfiguration configuration,string assemblyName)
     {

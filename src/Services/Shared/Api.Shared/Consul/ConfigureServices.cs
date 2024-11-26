@@ -10,9 +10,9 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Policy = Polly.Policy;
 
-namespace Api.Shared.Consul;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ConfigureServices
+public static partial class ConfigureServices
 {
     // Add Consul client to the service collection
     public static IServiceCollection AddConsulClient(this IServiceCollection services, IConfiguration configuration)

@@ -1,5 +1,4 @@
-﻿using System.Security.Authentication;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace WebApp.Application.Services.Identity;
 

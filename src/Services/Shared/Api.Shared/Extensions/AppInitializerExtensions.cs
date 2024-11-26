@@ -1,14 +1,10 @@
-﻿using Api.Shared.Auth;
-using Api.Shared.Consul;
-using Api.Shared.Swagger;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Api.Shared.Extensions;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class AppInitializerExtensions
 {

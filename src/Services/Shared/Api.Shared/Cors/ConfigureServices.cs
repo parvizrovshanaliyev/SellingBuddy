@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Api.Shared.Cors;
-
-public static class ConfigureServices
+namespace Microsoft.Extensions.DependencyInjection;
+public static partial class ConfigureServices
 {
     /// <summary>
     ///  Add CORS policy

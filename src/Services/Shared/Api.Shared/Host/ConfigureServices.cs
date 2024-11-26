@@ -3,9 +3,9 @@ using System.Net.Sockets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace Api.Shared.Host;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ConfigureServices
+public static partial class ConfigureServices
 {
     public static IWebHostBuilder ConfiguredKestrel(this IWebHostBuilder builder, IConfiguration configuration, out string urls)
     {

@@ -6,7 +6,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using WebApp.Extensions;
 
-namespace WebApp.Utils;
+namespace WebApp.Infrastructure.Identity;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {

@@ -1,12 +1,12 @@
 ﻿using System.Text;
+using Api.Shared.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Api.Shared.Auth;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ConfigureServices
+public static partial class ConfigureServices
 {
     public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
     {

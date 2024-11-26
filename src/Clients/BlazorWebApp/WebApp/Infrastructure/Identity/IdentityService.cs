@@ -3,11 +3,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using WebApp.Application.Services.Identity;
 using WebApp.Domain.User;
 using WebApp.Extensions;
-using WebApp.Utils;
+using WebApp.Infrastructure.Identity;
 
-namespace WebApp.Application.Services.Identity;
+namespace WebApp.Infrastructure.Indentity;
 
 public class IdentityService : IIdentityService
 {

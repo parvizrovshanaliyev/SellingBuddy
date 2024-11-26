@@ -1,11 +1,12 @@
-﻿using Api.Shared.Serializer;
+﻿using Api.Shared.Caching;
+using Api.Shared.Serializer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
-namespace Api.Shared.Caching;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ConfigureServices
+public static partial class ConfigureServices
 {
     public static IServiceCollection AddCaching(this IServiceCollection services,IConfiguration configuration)
     {
