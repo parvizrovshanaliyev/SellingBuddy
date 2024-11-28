@@ -1,0 +1,200 @@
+﻿/* Product Grid Container */
+.product-grid {
+    position: relative;
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #f1f1f1;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #f5f7fa, #e0e4e8); /* Subtle gradient */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Product Image */
+.product-image {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-image:hover img {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Product Content (Title, Price, Add to Cart) */
+.product-content {
+    padding: 15px;
+    text-align: center;
+    background-color: #fff;
+    border-top: 1px solid #f1f1f1;
+}
+
+/* Title Styling */
+.product-content .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+    text-transform: capitalize;
+    transition: color 0.3s ease;
+}
+
+.product-content .title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.product-content .title a:hover {
+    color: #007bff; /* Adjusted hover color */
+}
+
+/* Price Styling */
+.product-content .price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ff5722; /* Updated for better visibility */
+    margin-bottom: 15px;
+}
+
+/* Add to Cart Button */
+.add-to-cart {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(145deg, #28a745, #218838); /* Gradient button background */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.add-to-cart:hover {
+    background: linear-gradient(145deg, #218838, #28a745);
+    transform: scale(1.05); /* Add slight scale effect on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+    .product-grid {
+        margin-bottom: 20px;
+    }
+
+    .product-image {
+        height: 180px; /* Adjust height for smaller screens */
+    }
+
+    .product-content {
+        padding: 10px;
+    }
+
+    .product-content .title {
+        font-size: 16px;
+    }
+
+    .product-content .price {
+        font-size: 14px;
+    }
+
+    .add-to-cart {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .product-content .title {
+        font-size: 14px;
+    }
+
+    .product-content .price {
+        font-size: 12px;
+    }
+
+    .add-to-cart {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+/* Container for pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Pagination items */
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+/* Pagination links */
+.pagination .page-link {
+    color: #007bff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: linear-gradient(145deg, #f5f7fa, #e0e4e8); /* Subtle gradient */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+/* Pagination links on hover */
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Active page style */
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+/* Disabled page items (First, Prev, Next, Last) */
+.pagination .page-item.disabled .page-link {
+    color: #ccc;
+    pointer-events: none;
+    border-color: #ddd;
+}
+
+/* Ellipsis (for skipped pages) */
+.pagination .page-item .page-link {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: transparent;
+    color: #007bff;
+}
+
+/* Small screens - stack pagination vertically */
+@media (max-width: 576px) {
+    .pagination {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .pagination .page-item {
+        margin-bottom: 5px;
+    }
+}

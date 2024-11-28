@@ -137,8 +137,15 @@ public static class HttpClientExtension
 
             var resultContent = await HandleResponseAsync(httpResponse, url);
 
-            // Deserialize the response content into TResponse
-            var response = await Task.Run(() => JsonSerializer.Deserialize<TResponse>(resultContent));
+            // Deserialize the response content into TResponse with optional options
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase // Example for camel case
+            };
+            
+            // Attempt to deserialize the response content into TResponse
+            var response = JsonSerializer.Deserialize<TResponse>(resultContent ?? string.Empty, options);
+
             if (response == null)
             {
                 throw new InvalidOperationException("Response content could not be deserialized.");

@@ -1,0 +1,140 @@
+﻿@page "/catalog"
+@using WebApp.Domain.Catalog
+@using WebApp.Domain
+@using WebApp.Application.Services.Catalog
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Catalog</h2>
+
+    <!-- Loading Indicator -->
+    @if (isLoading)
+    {
+        <div class="text-center">
+            <span>Loading products...</span>
+        </div>
+    }
+    else
+    {
+        <!-- Display catalog items -->
+        <div class="row">
+            @if (paginatedItems?.Data?.Any() == true)
+            {
+                @foreach (var catalogItem in paginatedItems.Data)
+                {
+                    <WebApp.Components.Catalog.ProductView.ProductView CatalogItem="catalogItem" OnClick="() => OnAddToCart(catalogItem)"/>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p>No products available at the moment.</p>
+                </div>
+            }
+        </div>
+
+        @if (paginatedItems?.Count > 0)
+        {
+            <div class="d-flex justify-content-center mt-4">
+                <ul class="pagination">
+                    <!-- First Page -->
+                    <li class="page-item @(paginatedItems.PageIndex == 1 ? "disabled" : "")">
+                        <a class="page-link" href="javascript:void(0)" @onclick="() => LoadPage(1)">First</a>
+                    </li>
+
+                    <!-- Previous Page -->
+                    <li class="page-item @(paginatedItems.PageIndex == 1 ? "disabled" : "")">
+                        <a class="page-link" href="javascript:void(0)" @onclick="() => LoadPage(paginatedItems.PageIndex - 1)">Prev</a>
+                    </li>
+
+                    <!-- Ellipsis or Page Numbers -->
+                    @if (paginatedItems.PageIndex > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)" @onclick="() => LoadPage(paginatedItems.PageIndex - 2)">...</a>
+                        </li>
+                    }
+
+                    <!-- Page Numbers -->
+                    @for (int i = Math.Max(1, paginatedItems.PageIndex - 2); i <= Math.Min(paginatedItems.TotalPages, paginatedItems.PageIndex + 2); i++)
+                    {
+                        <li class="page-item @(i == paginatedItems.PageIndex ? "active" : "")">
+                            <a class="page-link" href="javascript:void(0)" @onclick="() => LoadPage(i)">@i</a>
+                        </li>
+                    }
+
+                    @if (paginatedItems.PageIndex < paginatedItems.TotalPages - 2)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="javascript:void(0)" @onclick="() => LoadPage(paginatedItems.PageIndex + 2)">...</a>
+                        </li>
+                    }
+
+                    <!-- Next Page -->
+                    <li class="page-item @(paginatedItems.PageIndex == paginatedItems.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="javascript:void(0)" @onclick="() => LoadPage(paginatedItems.PageIndex + 1)">Next</a>
+                    </li>
+
+                    <!-- Last Page -->
+                    <li class="page-item @(paginatedItems.PageIndex == paginatedItems.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="javascript:void(0)" @onclick="() => LoadPage(paginatedItems.TotalPages)">Last</a>
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+</div>
+
+@code {
+
+    [Inject]
+    private ICatalogService CatalogService { get; set; }
+
+    private PaginatedItemsViewModel<CatalogItem> paginatedItems = new PaginatedItemsViewModel<CatalogItem>();
+    private bool isLoading = true;
+
+    // Load the first page when component is initialized
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPage(1);
+    }
+
+    // Load the products for a specific page
+    private async Task LoadPage(int pageNumber)
+    {
+        try
+        {
+            isLoading = true; // Show loading indicator
+            var response = await CatalogService.GetCatalogItems(pageNumber, 10);
+
+    // Check if response is null or empty
+            if (response != null && response.Data != null)
+            {
+                paginatedItems = response;
+            }
+            else
+            {
+    // Handle empty response gracefully
+                paginatedItems = new PaginatedItemsViewModel<CatalogItem>();
+            }
+        }
+        catch (Exception ex)
+        {
+    // Log and handle error during API call
+            Console.Error.WriteLine($"Error loading catalog items: {ex.Message}");
+    // Optionally, display user-friendly error message to the UI
+        }
+        finally
+        {
+            isLoading = false; // Hide loading indicator after the API call
+        }
+    }
+
+    // Handle adding items to the cart
+    private void OnAddToCart(CatalogItem item)
+    {
+    // Implement the logic to add the item to the shopping cart
+        Console.WriteLine($"Added {item.Name} to the cart!");
+    // Optionally, trigger an event or call a cart service here
+    }
+
+}

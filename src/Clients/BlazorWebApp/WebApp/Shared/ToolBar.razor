@@ -43,7 +43,7 @@
     /// <summary>
     /// Logout the user and navigate to the login page.
     /// </summary>
-    private async void HandleLogout()
+    private  void HandleLogout()
     {
         IdentityService.Logout();
         isAuthenticated = false; // Update UI after logout

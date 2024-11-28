@@ -18,6 +18,8 @@ public class Program
         // Default HttpClient setup (used for base address defined by the app environment)
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+        builder.Services.AddApplicationServices();
+        
         builder.Services.AddInfrastructureServices(builder.Configuration);
 
         await builder.Build().RunAsync();
