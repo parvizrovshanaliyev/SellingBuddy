@@ -1,7 +1,9 @@
 ﻿@page "/catalog"
 @using WebApp.Domain.Catalog
 @using WebApp.Domain
-@using WebApp.Application.Services.Catalog
+@using WebApp.Application.Services.Interfaces
+@using System.Security.Principal
+@using WebApp.Application.Services.Identity
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Catalog</h2>
@@ -21,7 +23,7 @@
             {
                 @foreach (var catalogItem in paginatedItems.Data)
                 {
-                    <WebApp.Components.Catalog.ProductView.ProductView CatalogItem="catalogItem" OnClick="() => OnAddToCart(catalogItem)"/>
+                    <WebApp.Components.Catalog.ProductView.ProductView CatalogItem="catalogItem" OnClick="() => AddToCart(catalogItem)"/>
                 }
             }
             else
@@ -88,6 +90,18 @@
 
     [Inject]
     private ICatalogService CatalogService { get; set; }
+    
+    [Inject] 
+    private IIdentityService IdentityService { get; set; }
+    
+    [Inject]
+    private IBasketService basketService { get; set; }
+    
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+    
+    // [AppState]
+    // AppState AppState { get; set; }
 
     private PaginatedItemsViewModel<CatalogItem> paginatedItems = new PaginatedItemsViewModel<CatalogItem>();
     private bool isLoading = true;
@@ -130,11 +144,20 @@
     }
 
     // Handle adding items to the cart
-    private void OnAddToCart(CatalogItem item)
+    private async Task AddToCart(CatalogItem item)
     {
-    // Implement the logic to add the item to the shopping cart
-        Console.WriteLine($"Added {item.Name} to the cart!");
-    // Optionally, trigger an event or call a cart service here
+       if(!IdentityService.IsAuthenticated)
+       {
+           // Redirect to login page if user is not authenticated
+           NavigationManager.NavigateTo($"/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}", forceLoad: true);
+           return;
+       }
+        
+        // Add item to the basket
+        await basketService.AddItemToBasketAsync(item.Id);
+        
+        // Update the basket count in the app state
+        //AppState.IncreaseBasketCount(this);
     }
 
 }

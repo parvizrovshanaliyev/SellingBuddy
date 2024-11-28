@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using WebApp.Application.Services.Identity;
 using WebApp.Infrastructure.Identity;
-using WebApp.Infrastructure.Indentity;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

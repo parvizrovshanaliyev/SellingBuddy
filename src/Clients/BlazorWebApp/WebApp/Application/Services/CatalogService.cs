@@ -1,9 +1,10 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using WebApp.Application.Services.Catalog;
+using WebApp.Application.Services.Interfaces;
 using WebApp.Domain;
 using WebApp.Domain.Catalog;
 using WebApp.Extensions;
+using WebApp.Infrastructure.HttpClient;
 
 namespace WebApp.Application.Services;
 

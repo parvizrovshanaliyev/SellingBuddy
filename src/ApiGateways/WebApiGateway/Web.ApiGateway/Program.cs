@@ -3,6 +3,9 @@ using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
 using Web.ApiGateway.Configurations;
+using Web.ApiGateway.Infrastructure.HttpClient;
+
+namespace Web.ApiGateway;
 
 public class Program
 {
@@ -59,6 +62,8 @@ public class Program
         builder.Services.AddSwaggerGen();
         
         builder.Services.AddCors(builder.Configuration);
+        
+        builder.Services.AddHttpClients(builder.Configuration);
 
         var app = builder.Build();
 
@@ -99,4 +104,5 @@ public class Program
         return false;
 #endif
     }
+    
 }

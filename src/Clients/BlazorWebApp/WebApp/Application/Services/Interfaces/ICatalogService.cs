@@ -2,7 +2,7 @@
 using WebApp.Domain;
 using WebApp.Domain.Catalog;
 
-namespace WebApp.Application.Services.Catalog;
+namespace WebApp.Application.Services.Interfaces;
 
 public interface ICatalogService
 {

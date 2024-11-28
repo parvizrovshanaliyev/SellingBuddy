@@ -16,5 +16,9 @@
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Domain\ViewModels\" />
+    </ItemGroup>
+
 
 </Project>

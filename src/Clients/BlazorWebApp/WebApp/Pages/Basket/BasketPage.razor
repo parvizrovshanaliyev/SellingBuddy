@@ -1,0 +1,92 @@
+﻿@page "/basket"
+@using WebApp.Domain.Basket
+@using WebApp.Application.Services.Interfaces
+@inject IBasketService basketService
+@inject NavigationManager navigationManager
+@* @inject AppState appState *@
+
+<h3>Your Basket</h3>
+
+@if (isLoading)
+{
+    <p><strong>Loading your basket...</strong></p>
+}
+else if (basket.Items == null || !basket.Items.Any())
+{
+    <p>Your basket is empty. Browse the catalog and add items!</p>
+}
+else
+{
+    <div class="basket-items">
+        @foreach (var item in basket.Items)
+        {
+            <div class="basket-item">
+                <div class="item-details">
+                    <img src="@item.PictureUrl" alt="@item.ProductName" class="item-image" />
+                    <div class="item-info">
+                        <h4>@item.ProductName</h4>
+                        <p><strong>Price:</strong> @item.UnitPrice.ToString("C")</p>
+                        <p><strong>Quantity:</strong> @item.Quantity</p>
+                    </div>
+                </div>
+                <button class="btn btn-danger" @onclick="() => RemoveItemFromBasket(item)">Remove</button>
+            </div>
+        }
+    </div>
+
+    <div class="basket-summary">
+        <p><strong>Total Items:</strong> @basket.Items.Count</p>
+        <p><strong>Total Price:</strong> @basket.Items.Sum(item => item.Quantity * item.UnitPrice).ToString("C")</p>
+        <button class="btn btn-primary" @onclick="Checkout">Proceed to Checkout</button>
+    </div>
+}
+
+@if (errorMessage != null)
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+
+@code {
+    private Basket basket = new Basket();
+    private bool isLoading = true;
+    private string? errorMessage; // Track error messages
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            basket = await basketService.GetBasketAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error fetching basket: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void Checkout()
+    {
+        navigationManager.NavigateTo("/create-order");
+    }
+
+    private async Task RemoveItemFromBasket(BasketItem basketItem)
+    {
+        if (basketItem == null) return;
+
+        try
+        {
+            basket.Items.Remove(basketItem);
+            basket = await basketService.UpdateBasketAsync(basket);
+            //appState.UpdateBasket(basket);  // Update app state to reflect the changes
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error removing item: {ex.Message}";
+        }
+    }
+}

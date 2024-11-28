@@ -41,6 +41,8 @@ public static class AppInitializerExtensions
             app.UseSwaggerDocumentation(configuration);
         }
 
+        app.UseStaticFiles();
+
         app.UseRouting();
 
         app.UseAuthentication();

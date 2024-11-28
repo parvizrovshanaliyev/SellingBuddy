@@ -31,9 +31,4 @@
         <ProjectReference Include="..\..\..\Services\Shared\Api.Shared\Api.Shared.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-<!--        /<Content Include="ocelot.json" CopyToOutputDirectory="PreserveNewest"/>-->
-<!--        <Content Include="ocelot.Development.json" CopyToOutputDirectory="PreserveNewest"/>-->
-    </ItemGroup>
-
 </Project>

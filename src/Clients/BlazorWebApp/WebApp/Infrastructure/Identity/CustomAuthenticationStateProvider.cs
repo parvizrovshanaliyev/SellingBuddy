@@ -11,7 +11,7 @@ namespace WebApp.Infrastructure.Identity;
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
     private readonly ILocalStorageService _localStorageService;
-    private readonly HttpClient _httpClient;
+    private readonly System.Net.Http.HttpClient _httpClient;
     private readonly AuthenticationState _anonymous;
 
     /// <summary>
@@ -19,7 +19,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     /// </summary>
     /// <param name="localStorageService">The local storage service for retrieving stored tokens and usernames.</param>
     /// <param name="httpClient">The HTTP client for setting the authorization header.</param>
-    public CustomAuthenticationStateProvider(ILocalStorageService localStorageService, HttpClient httpClient)
+    public CustomAuthenticationStateProvider(ILocalStorageService localStorageService, System.Net.Http.HttpClient httpClient)
     {
         _localStorageService = localStorageService;
         _httpClient = httpClient;

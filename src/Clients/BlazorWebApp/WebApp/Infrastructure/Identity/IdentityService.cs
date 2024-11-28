@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Components.Authorization;
 using WebApp.Application.Services.Identity;
 using WebApp.Domain.User;
 using WebApp.Extensions;
-using WebApp.Infrastructure.Identity;
+using WebApp.Infrastructure.HttpClient;
 
-namespace WebApp.Infrastructure.Indentity;
+namespace WebApp.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
-    private readonly HttpClient _httpClient;
+    private readonly System.Net.Http.HttpClient _httpClient;
     private readonly ISyncLocalStorageService _syncLocalStorageService;
     private readonly AuthenticationStateProvider _authStateProvider;
 
@@ -22,7 +22,7 @@ public class IdentityService : IIdentityService
     /// <param name="httpClient">The HTTP client used for making requests.</param>
     /// <param name="syncLocalStorageService">The local storage service for storing and retrieving data.</param>
     /// <param name="authStateProvider">The authentication state provider.</param>
-    public IdentityService(HttpClient httpClient, ISyncLocalStorageService syncLocalStorageService,
+    public IdentityService(System.Net.Http.HttpClient httpClient, ISyncLocalStorageService syncLocalStorageService,
         AuthenticationStateProvider authStateProvider)
     {
         _httpClient = httpClient;
@@ -67,7 +67,7 @@ public class IdentityService : IIdentityService
             var request = new UserLoginRequest(username, password);
 
             // Make the HTTP request to authenticate the user
-            var response = await _httpClient.PostGetResponseAsync<UserLoginResponse, UserLoginRequest>("auth/login", request);
+            var response = await HttpClientExtension.PostGetResponseAsync<UserLoginResponse, UserLoginRequest>(_httpClient, "auth/login", request);
 
             // If the token is returned, login was successful
             if (!string.IsNullOrEmpty(response.UserToken))

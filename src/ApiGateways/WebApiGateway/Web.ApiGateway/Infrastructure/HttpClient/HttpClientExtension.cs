@@ -1,12 +1,7 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
+﻿using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
-using WebApp.Domain.User;
 
-namespace WebApp.Extensions;
+namespace Web.ApiGateway.Infrastructure.HttpClient;
 
 public static class HttpClientExtension
 {
@@ -54,11 +49,11 @@ public static class HttpClientExtension
     /// <returns>A task representing the asynchronous operation, with the deserialized result as the outcome.</returns>
     /// <exception cref="HttpRequestException">Thrown if the response is not successful or if an error occurs during the HTTP request.</exception>
     public static async Task<TResponse> PostGetResponseAsync<TResponse, TRequest>(
-        this HttpClient httpClient,
+        this System.Net.Http.HttpClient httpClient,
         string url,
         TRequest value)
-        where TResponse : ResponseBase, new()
-        where TRequest : RequestBase
+        where TResponse : class
+        where TRequest : class
     {
         try
         {
@@ -102,13 +97,16 @@ public static class HttpClientExtension
     /// <param name="value">The value to be sent in the request body.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     /// <exception cref="HttpRequestException">Thrown if the response is not successful or if an error occurs during the HTTP request.</exception>
-    public static async Task PostAsync<TRequest>(this HttpClient httpClient, string url, TRequest value)
-        where TRequest : RequestBase
+    public static async Task<ResponseBase> PostAsync<TRequest>(this System.Net.Http.HttpClient httpClient, string url, TRequest value)
+        where TRequest : class
     {
         try
         {
             var httpResponse = await httpClient.PostAsJsonAsync(url, value);
-            await HandleResponseAsync(httpResponse, url);
+            
+            var resultContent = await HandleResponseAsync(httpResponse, url);
+            
+            return  new ResponseBase { Success = true };
         }
         catch (HttpRequestException httpEx)
         {
@@ -129,7 +127,7 @@ public static class HttpClientExtension
     /// <param name="url">The URL to send the GET request to.</param>
     /// <returns>A task representing the asynchronous operation, with the deserialized result as the outcome.</returns>
     /// <exception cref="HttpRequestException">Thrown if an error occurs during the HTTP request.</exception>
-    public static async Task<TResponse> GetResponseAsync<TResponse>(this HttpClient httpClient, string url)
+    public static async Task<TResponse> GetResponseAsync<TResponse>(this System.Net.Http.HttpClient httpClient, string url)
     {
         try
         {

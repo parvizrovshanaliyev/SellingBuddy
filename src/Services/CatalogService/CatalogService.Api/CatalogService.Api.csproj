@@ -50,6 +50,7 @@
 
     <ItemGroup>
         <Folder Include="Infrastructure\Setup"/>
+        <Folder Include="wwwroot\" />
     </ItemGroup>
 
     <ItemGroup>

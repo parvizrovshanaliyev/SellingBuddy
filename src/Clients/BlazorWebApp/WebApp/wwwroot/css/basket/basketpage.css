@@ -1,0 +1,74 @@
+﻿.basket-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.basket-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.basket-item:hover {
+    background-color: #f9f9f9;
+}
+
+.item-details {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.item-info h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.item-info p {
+    margin: 3px 0;
+}
+
+.basket-summary {
+    margin-top: 30px;
+    text-align: right;
+    font-size: 18px;
+}
+
+.basket-summary p {
+    margin: 5px 0;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #0275d8;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}

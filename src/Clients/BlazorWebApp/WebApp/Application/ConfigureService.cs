@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using WebApp.Application.Services;
-using WebApp.Application.Services.Catalog;
 using WebApp.Application.Services.Identity;
-using WebApp.Infrastructure.Indentity;
+using WebApp.Application.Services.Interfaces;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
