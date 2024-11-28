@@ -16,7 +16,7 @@ public static class AppInitializerExtensions
         
         services.AddSwaggerDocumentation(configuration, assemblyName);
         
-        services.AddConsulClient(configuration);
+        //services.AddConsulClient(configuration);
         
         services.AddLogging(configure => configure.AddConsole());
         
@@ -33,7 +33,7 @@ public static class AppInitializerExtensions
         IHostApplicationLifetime lifetime,
         IWebHostEnvironment environment)
     {
-        app.UseConsulRegister(configuration, lifetime); 
+        //app.UseConsulRegister(configuration, lifetime); 
         
         // Configure the HTTP request pipeline.
         if (environment.IsDevelopment())

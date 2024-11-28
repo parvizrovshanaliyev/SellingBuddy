@@ -15,33 +15,15 @@ public class UserLoginResponse : ResponseBase
     /// <exception cref="ArgumentException">Thrown if either username or token is null or empty.</exception>
     public UserLoginResponse(string username, string token) : this()
     {
-        // Validate that username and token are not null or empty
-        if (string.IsNullOrWhiteSpace(username))
-        {
-            throw new ArgumentException("Username cannot be empty or null.", nameof(username));
-        }
-
-        if (string.IsNullOrWhiteSpace(token))
-        {
-            throw new ArgumentException("Token cannot be empty or null.", nameof(token));
-        }
-
         Username = username;
-        Token = token;
+        UserToken = token;
     }
 
     public UserLoginResponse()
     {
-       
+
     }
 
-    /// <summary>
-    /// Gets the username of the authenticated user.
-    /// </summary>
-    public string Username { get; }
-
-    /// <summary>
-    /// Gets the authentication token for the user.
-    /// </summary>
-    public string Token { get; }
+    public string Username { get; set; }
+    public string UserToken { get; set; }
 }

@@ -19,16 +19,6 @@ public class UserLoginRequest : RequestBase
     /// <exception cref="ArgumentException">Thrown when either the username or password is null or empty.</exception>
     public UserLoginRequest(string username, string password) : this()
     {
-        // Validate username and password to ensure they're not empty or null
-        if (string.IsNullOrWhiteSpace(username))
-        {
-            throw new ArgumentException("Username cannot be empty or null.", nameof(username));
-        }
-
-        if (string.IsNullOrWhiteSpace(password))
-        {
-            throw new ArgumentException("Password cannot be empty or null.", nameof(password));
-        }
 
         Username = username;
         Password = password;

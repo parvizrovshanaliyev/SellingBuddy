@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "UseServiceDiscovery": true,
+//      "UseServiceDiscovery": false,
       "ServiceName": "order-service",
       "DownstreamPathTemplate": "/api/order/{everything}",
       "DownstreamScheme": "http",

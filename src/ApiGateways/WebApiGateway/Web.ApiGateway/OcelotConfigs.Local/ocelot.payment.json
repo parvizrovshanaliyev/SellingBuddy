@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "UseServiceDiscovery": true,
+//      "UseServiceDiscovery": false,
       "ServiceName": "payment-service",
       "DownstreamPathTemplate": "/api/payment/{everything}",
       "DownstreamScheme": "http",

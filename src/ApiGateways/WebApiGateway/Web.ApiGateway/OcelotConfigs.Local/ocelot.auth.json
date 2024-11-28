@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      "UseServiceDiscovery": true,
+//      "UseServiceDiscovery": false,
       "ServiceName": "auth-service",
       "DownstreamPathTemplate": "/api/auth/{everything}",
       "DownstreamScheme": "http",
@@ -20,8 +20,5 @@
       ],
       "SwaggerKey": "auth-key"
     }
-  ],
-  "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:5000"
-  }
+  ]
 }

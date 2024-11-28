@@ -9,26 +9,31 @@
         <NoWarn>$(NoWarn);1591</NoWarn>
     </PropertyGroup>
 
-<!--    <ItemGroup>-->
-<!--        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>-->
-<!--        <PackageReference Include="MMLib.SwaggerForOcelot" Version="6.2.0"/>-->
-<!--        <PackageReference Include="Ocelot" Version="18.0.0"/>-->
-<!--        <PackageReference Include="Ocelot.Provider.Polly" Version="18.0.0"/>-->
-<!--        <PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />-->
-<!--        <PackageReference Include="Polly" Version="7.2.4"/>-->
-<!--    </ItemGroup>-->
+    <!--    <ItemGroup>-->
+    <!--        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>-->
+    <!--        <PackageReference Include="MMLib.SwaggerForOcelot" Version="6.2.0"/>-->
+    <!--        <PackageReference Include="Ocelot" Version="18.0.0"/>-->
+    <!--        <PackageReference Include="Ocelot.Provider.Polly" Version="18.0.0"/>-->
+    <!--        <PackageReference Include="Ocelot.Provider.Consul" Version="18.0.0" />-->
+    <!--        <PackageReference Include="Polly" Version="7.2.4"/>-->
+    <!--    </ItemGroup>-->
 
     <ItemGroup>
-        <PackageReference Include="Swashbuckle.AspNetCore" />
-        <PackageReference Include="MMLib.SwaggerForOcelot" />
-        <PackageReference Include="Ocelot" />
-        <PackageReference Include="Ocelot.Provider.Polly" />
-        <PackageReference Include="Ocelot.Provider.Consul" />
-        <PackageReference Include="Polly" />
+        <PackageReference Include="Swashbuckle.AspNetCore"/>
+        <PackageReference Include="MMLib.SwaggerForOcelot"/>
+        <PackageReference Include="Ocelot"/>
+        <PackageReference Include="Ocelot.Provider.Polly"/>
+        <PackageReference Include="Ocelot.Provider.Consul"/>
+        <PackageReference Include="Polly"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Services\Shared\Api.Shared\Api.Shared.csproj" />
+        <ProjectReference Include="..\..\..\Services\Shared\Api.Shared\Api.Shared.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+<!--        /<Content Include="ocelot.json" CopyToOutputDirectory="PreserveNewest"/>-->
+<!--        <Content Include="ocelot.Development.json" CopyToOutputDirectory="PreserveNewest"/>-->
     </ItemGroup>
 
 </Project>

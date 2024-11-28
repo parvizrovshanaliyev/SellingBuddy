@@ -70,16 +70,16 @@ public class IdentityService : IIdentityService
             var response = await _httpClient.PostGetResponseAsync<UserLoginResponse, UserLoginRequest>("auth/login", request);
 
             // If the token is returned, login was successful
-            if (!string.IsNullOrEmpty(response.Token))
+            if (!string.IsNullOrEmpty(response.UserToken))
             {
                 // Store the token and username in local storage
-                StoreUserCredentials(response.Token, username);
+                StoreUserCredentials(response.UserToken, username);
 
                 // Notify the authentication state provider about the successful login
                 NotifyAuthenticationState(username);
 
                 // Set the authorization header for future requests
-                SetAuthorizationHeader(response.Token);
+                SetAuthorizationHeader(response.UserToken);
 
                 return true;
             }
