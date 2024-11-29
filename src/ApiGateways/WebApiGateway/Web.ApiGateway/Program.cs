@@ -1,9 +1,12 @@
+using System.Reflection;
+using Api.Shared.Extensions;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
 using Ocelot.Provider.Polly;
 using Web.ApiGateway.Configurations;
 using Web.ApiGateway.Infrastructure.HttpClient;
+using Web.ApiGateway.Services;
 
 namespace Web.ApiGateway;
 
@@ -12,31 +15,36 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         // Configure Kestrel and Content Root
         builder.Host.UseContentRoot(Directory.GetCurrentDirectory());
-       
+
         // Configure app configuration to load multiple Ocelot JSON files
         builder.Host.ConfigureAppConfiguration((context, config) =>
         {
-            Console.WriteLine($"Environment: {context.HostingEnvironment.EnvironmentName}");
-            Console.WriteLine($"Content Root: {context.HostingEnvironment.ContentRootPath}");
-
+            // Console.WriteLine($"Environment: {context.HostingEnvironment.EnvironmentName}");
+            // Console.WriteLine($"Content Root: {context.HostingEnvironment.ContentRootPath}");
+            //
+            // config
+            //     .SetBasePath(context.HostingEnvironment.ContentRootPath)
+            //     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            //     .AddJsonFile("SharedAppSettings.json", optional: true, reloadOnChange: true)
+            //     .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true,
+            //         reloadOnChange: true)
             config
                 .SetBasePath(context.HostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{context.HostingEnvironment.EnvironmentName}.json", optional: true,
-                    reloadOnChange: true)
                 .AddJsonFile($"ocelot.{context.HostingEnvironment.EnvironmentName}.json", optional: true,
                     reloadOnChange: true);
-             
+
             config.AddEnvironmentVariables();
         });
         
+        builder.AddSharedAppSettingsAndEnvironmentVariables(args);
+
         // Configure logging
         builder.Logging.AddConsole();
-        
-        if(IsDebugMode())
+
+        if (IsDebugMode())
         {
             // Add Ocelot services, Consul, and Polly for resilience
             builder.Services.AddOcelot(builder.Configuration);
@@ -51,7 +59,7 @@ public class Program
 
         // Add Swagger for Ocelot
         builder.Services.AddSwaggerForOcelot(builder.Configuration);
-        
+
         // Add Controllers
         builder.Services.AddControllers();
 
@@ -59,11 +67,15 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
 
         // Add SwaggerGen to generate Swagger UI for the API Gateway itself
-        builder.Services.AddSwaggerGen();
-        
+        builder.Services.AddSwaggerDocumentation(builder.Configuration, Assembly.GetExecutingAssembly().GetName().Name);
+
         builder.Services.AddCors(builder.Configuration);
-        
+
         builder.Services.AddHttpClients(builder.Configuration);
+
+        builder.Services.AddAppServices();
+        
+        builder.Services.AddAuthService(builder.Configuration);
 
         var app = builder.Build();
 
@@ -81,13 +93,11 @@ public class Program
         app.UseRouting();
         app.UseCorsPolicy();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         // Map controller endpoints
-        app.UseEndpoints(endpoints => 
-        { 
-            endpoints.MapControllers(); 
-        });
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
         // Run Ocelot middleware
         app.UseOcelot().GetAwaiter().GetResult();
@@ -95,7 +105,7 @@ public class Program
         // Run the application
         app.Run();
     }
-    
+
     public static bool IsDebugMode()
     {
 #if DEBUG
@@ -104,5 +114,4 @@ public class Program
         return false;
 #endif
     }
-    
 }

@@ -96,6 +96,17 @@
   ],
   "SwaggerEndPoints": [
     {
+      "Key": "gateway",
+      "TransformByOcelotConfig": false,
+      "Config": [
+        {
+          "Name": "Web API Gateway",
+          "Version": "1.0",
+          "Url": "http://localhost:5000/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
       "Key": "auth-key",
       "TransformByOcelotConfig": true,
       "Config": [

@@ -10,6 +10,9 @@ public static class ConfigureService
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<ICatalogService, CatalogService>();
+        services.AddScoped<IBasketService, BasketService>();
+        services.AddScoped<IOrderService, OrderService>();
+        
         return services;
     }
 }

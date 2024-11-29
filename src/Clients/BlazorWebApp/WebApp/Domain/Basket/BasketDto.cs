@@ -27,7 +27,7 @@ public class BasketDto
     public string CardHolderName { get; set; }
     
     [Required]
-    public string CardExpirationSort { get; set; }
+    public string CardExpirationShort { get; set; }
     
     [Required]
     public DateTime CardExpiration { get; set; }

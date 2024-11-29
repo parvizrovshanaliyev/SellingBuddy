@@ -1,4 +1,4 @@
-﻿namespace WebApp.Domain.User;
+﻿namespace WebApp.Infrastructure.HttpClient;
 
 public class ResponseBase
 {

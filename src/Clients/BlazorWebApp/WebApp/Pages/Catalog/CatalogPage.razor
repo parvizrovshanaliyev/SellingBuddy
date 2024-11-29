@@ -4,6 +4,7 @@
 @using WebApp.Application.Services.Interfaces
 @using System.Security.Principal
 @using WebApp.Application.Services.Identity
+@using WebApp.Infrastructure
 
 <div class="container mt-5">
     <h2 class="text-center mb-4">Catalog</h2>
@@ -100,8 +101,8 @@
     [Inject]
     NavigationManager NavigationManager { get; set; }
     
-    // [AppState]
-    // AppState AppState { get; set; }
+    [Inject]
+    AppStateManager AppState { get; set; }
 
     private PaginatedItemsViewModel<CatalogItem> paginatedItems = new PaginatedItemsViewModel<CatalogItem>();
     private bool isLoading = true;
@@ -157,7 +158,7 @@
         await basketService.AddItemToBasketAsync(item.Id);
         
         // Update the basket count in the app state
-        //AppState.IncreaseBasketCount(this);
+        AppState.UpdateCartCount(this);
     }
 
 }

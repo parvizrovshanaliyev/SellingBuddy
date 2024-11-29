@@ -3,12 +3,14 @@ using Web.ApiGateway.Models;
 using Web.ApiGateway.Models.Basket;
 using Web.ApiGateway.Services.Interfaces;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Web.ApiGateway.Models.Catalog;
 
 namespace Web.ApiGateway.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("[controller]")]
+[Authorize]
 public class BasketController : ControllerBase
 {
     private readonly ICatalogService _catalogService; 

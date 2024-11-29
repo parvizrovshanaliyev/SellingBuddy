@@ -45,6 +45,16 @@ public class CatalogController : ControllerBase
             new PaginatedItemsViewModel<CatalogItem>(pageIndex, pageSize, totalItems, catalogItems);
         return Ok(paginatedItemsViewModel);
     }
+    
+    [HttpGet("items/{id}")]
+    [ProducesResponseType(typeof(CatalogItem), 200)]
+    public async Task<IActionResult> GetCatalogItem(int id)
+    {
+        var catalogItem = await _context.CatalogItems.FindAsync(id);
+        if (catalogItem == null) return NotFound();
+
+        return Ok(catalogItem);
+    }
 
     #endregion
 

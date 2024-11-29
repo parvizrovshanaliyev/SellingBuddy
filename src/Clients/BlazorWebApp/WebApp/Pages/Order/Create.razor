@@ -1,0 +1,102 @@
+﻿@page "/create-order"
+@inject IBasketService BasketService
+@inject IIdentityService IdentityService
+@inject IOrderService OrderService
+@inject NavigationManager NavigationManager
+@inject AppStateManager AppState
+
+<div class="create-order-page">
+    <div class="create-order-form">
+        <h3>Create Order</h3>
+
+        <EditForm Model="order" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="form-group">
+                <label for="cardHolderName">Card Holder Name</label>
+                <InputText id="cardHolderName" class="form-control" @bind-Value="order.CardHolderName" />
+                <ValidationMessage For="() => order.CardHolderName" class="validation-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="cardNumber">Card Number</label>
+                <InputText id="cardNumber" class="form-control" @bind-Value="order.CardNumber" />
+                <ValidationMessage For="() => order.CardNumber" class="validation-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="cardSecurityNumber">Card Security Number</label>
+                <InputText id="cardSecurityNumber" class="form-control" @bind-Value="order.CardSecurityNumber" />
+                <ValidationMessage For="() => order.CardSecurityNumber" class="validation-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="cardExpirationShort">Expiration (MM/YY)</label>
+                <InputText id="cardExpirationShort" class="form-control" @bind-Value="order.CardExpirationShort" />
+                <ValidationMessage For="() => order.CardExpirationShort" class="validation-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="street">Street</label>
+                <InputText id="street" class="form-control" @bind-Value="order.Street" />
+                <ValidationMessage For="() => order.Street" class="validation-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="city">City</label>
+                <InputText id="city" class="form-control" @bind-Value="order.City" />
+                <ValidationMessage For="() => order.City" class="validation-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="country">Country</label>
+                <InputText id="country" class="form-control" @bind-Value="order.Country" />
+                <ValidationMessage For="() => order.Country" class="validation-message" />
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="order.Description" />
+                <ValidationMessage For="() => order.Description" class="validation-message" />
+            </div>
+
+            <button type="submit" class="btn-submit" disabled="@isSubmitting">
+                @(isSubmitting ? "Submitting..." : "Submit Order")
+            </button>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Order order = new Order();
+    private bool isSubmitting;
+    private string errorMessage;
+
+    private async Task OnValidSubmit()
+    {
+        isSubmitting = true;
+        errorMessage = null;
+        try
+        {
+            order.Buyer = IdentityService.GetUserName();
+            var basket = OrderService.MapOrderToBasket(order);
+            await BasketService.CheckoutAsync(basket);
+            AppState.UpdateCartCount(this);
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+}

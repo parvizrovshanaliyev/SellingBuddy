@@ -1,4 +1,5 @@
 ﻿using System;
+using WebApp.Infrastructure.HttpClient;
 
 namespace WebApp.Domain.User;
 

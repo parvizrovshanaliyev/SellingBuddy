@@ -28,6 +28,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="..\..\..\SharedFiles\SharedAppSettings.json" Link="SharedAppSettings.json" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <ProjectReference Include="..\..\..\Services\Shared\Api.Shared\Api.Shared.csproj"/>
     </ItemGroup>
 

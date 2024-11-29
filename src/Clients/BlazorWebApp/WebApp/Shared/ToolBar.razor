@@ -1,4 +1,6 @@
 ﻿@using WebApp.Application.Services.Identity
+@using WebApp.Application.Services.Interfaces
+@using WebApp.Infrastructure
 
 <div class="toolbar">
     @if (isAuthenticated)
@@ -13,14 +15,29 @@
 </div>
 
 @code {
+
     [Inject]
     private IIdentityService IdentityService { get; set; } = default!;
 
     [Inject]
-    private NavigationManager NavigationManager { get; set; } = default!;
+    private IBasketService BasketService { get; set; } = default!;
 
-    private bool isAuthenticated;
-    private int basketItemCount;
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+    
+    [Inject] 
+    AppStateManager AppState { get; set; } = default!;
+
+    private bool isAuthenticated=false;
+    private int basketItemCount = 0;
+    
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            AppState.StateChanged += async (source, propertyName) => await AppState_StateChanged(source, propertyName);
+        }
+    }
 
     /// <summary>
     /// Initialize authentication status and other necessary data.
@@ -29,7 +46,6 @@
     {
         // Initialize authentication status and other data
         isAuthenticated = IdentityService.IsAuthenticated;
-        basketItemCount = GetBasketItemCount(); // Placeholder: Replace with actual logic to fetch basket count
     }
 
     /// <summary>
@@ -43,7 +59,7 @@
     /// <summary>
     /// Logout the user and navigate to the login page.
     /// </summary>
-    private  void HandleLogout()
+    private void HandleLogout()
     {
         IdentityService.Logout();
         isAuthenticated = false; // Update UI after logout
@@ -57,16 +73,52 @@
     private void NavigateTo(string page)
     {
         var returnUrl = Uri.EscapeDataString(NavigationManager.Uri);
-        NavigationManager.NavigateTo($"{page}?returnUrl={returnUrl}", forceLoad: true);
+        NavigationManager.NavigateTo($"{page}?returnUrl={returnUrl}", forceLoad: false);
     }
 
-    /// <summary>
-    /// Placeholder method to simulate fetching the basket item count.
-    /// </summary>
-    /// <returns>The number of items in the basket.</returns>
-    private int GetBasketItemCount()
+    
+
+    private async Task AppState_StateChanged(ComponentBase source, string propertyName)
     {
-        // Replace with actual logic to fetch basket item count (e.g., from a service or local storage)
-        return 3; // Example item count
+        if (source == this) return;
+
+        if (propertyName == "increase")
+        {
+            basketItemCount++;
+        }
+        else if (propertyName == "updatebasket")
+        {
+            await calculateBasketItemCount();
+        }
+        else if (propertyName == "login")
+        {
+            await calculateBasketItemCount();
+        }
+        else if (propertyName == "logout")
+        {
+            isAuthenticated = IdentityService.IsAuthenticated;
+            basketItemCount = 0;
+        } 
+
+        await InvokeAsync(StateHasChanged);
     }
+    
+    private async Task<int> calculateBasketItemCount()
+    {
+        isAuthenticated = IdentityService.IsAuthenticated;
+        
+        if(!isAuthenticated)
+        {
+            return 0;
+        }
+        
+        var basket = await BasketService.GetBasketAsync();
+        var count = basket?.Items == null ? 0 : basket.Items.Sum (i => i.Quantity);
+        basketItemCount = count;
+        
+        return count;
+    }
+    
+    
+
 }

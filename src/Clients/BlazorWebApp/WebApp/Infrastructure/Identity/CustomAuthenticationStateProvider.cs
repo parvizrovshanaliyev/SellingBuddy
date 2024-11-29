@@ -13,16 +13,18 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     private readonly ILocalStorageService _localStorageService;
     private readonly System.Net.Http.HttpClient _httpClient;
     private readonly AuthenticationState _anonymous;
+    private readonly AppStateManager _appStateManager;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CustomAuthenticationStateProvider"/> class.
     /// </summary>
     /// <param name="localStorageService">The local storage service for retrieving stored tokens and usernames.</param>
     /// <param name="httpClient">The HTTP client for setting the authorization header.</param>
-    public CustomAuthenticationStateProvider(ILocalStorageService localStorageService, System.Net.Http.HttpClient httpClient)
+    public CustomAuthenticationStateProvider(ILocalStorageService localStorageService, System.Net.Http.HttpClient httpClient, AppStateManager appStateManager)
     {
         _localStorageService = localStorageService;
         _httpClient = httpClient;
+        _appStateManager = appStateManager;
         _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
     }
 
@@ -76,6 +78,9 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
         // Notify the authentication state has changed to authenticated
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(authenticatedUser)));
+        
+        // Notify the AppStateManager that the login state has changed
+        _appStateManager.LoginChanged(null);
     }
 
     /// <summary>
@@ -85,5 +90,8 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
     {
         // Notify the authentication state has changed to anonymous
         NotifyAuthenticationStateChanged(Task.FromResult(_anonymous));
+        
+        // Notify the AppStateManager that the login state has changed
+        _appStateManager.LoginChanged(null);
     }
 }
